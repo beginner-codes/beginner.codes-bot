@@ -1,10 +1,9 @@
 on:
   push:
     branches:
-      - dippy-rewrite
+      - main
 
 jobs:
-
   build:
     name: Building & Deploying Beginner.py Bot (Dippy)
     runs-on: ubuntu-latest
