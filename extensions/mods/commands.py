@@ -72,8 +72,8 @@ class ModeratorsExtension(dippy.Extension):
     @dippy.Extension.command("!team")
     async def team_command(self, message: Message):
         boosters = utils.get(message.guild.roles, name="Discord Boosters!!!").members
-        premium_members = utils.get(message.guild.roles, name="Premium Members")
-        helpers = list(utils.get(message.guild.roles, name="helpers").members)
+        premium_members = utils.get(message.guild.roles, name="Premium Members").members
+        helpers = utils.get(message.guild.roles, name="helpers").members
         mods = utils.get(message.guild.roles, name="mods").members
         staff = utils.get(message.guild.roles, name="staff").members
 
