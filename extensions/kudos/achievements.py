@@ -57,8 +57,8 @@ class Achievements(UserDict, Injectable):
                     "Minecrafters get access to the Minecraft server and the Discord discussion channel.",
                     "You're a Minecrafter! You can now access the Minecraft server and the Discord discussion channel.",
                     "🌳",
-                    -1,
-                    7,
+                    1500,
+                    200,
                 ),
             }
         )
