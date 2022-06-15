@@ -32,13 +32,13 @@ class Achievements(UserDict, Injectable):
                 "MUSIC_DJ": Achievement(
                     "Music DJ [LEGACY]",
                     (
-                        "**[LEGACY]** ~Music DJs get the 🎸Music DJ🎸 role while in voice chat allowing them full "
-                        "control of the Rythm music bot.~\n\n*The Rythm bot has shutdown, until we find a new use for "
+                        "**[LEGACY]** ~~Music DJs get the 🎸Music DJ🎸 role while in voice chat allowing them full "
+                        "control of the Rythm music bot.~~\n\n*The Rythm bot has shutdown, until we find a new use for "
                         "this achievement it offers no perks.*"
                     ),
                     (
-                        "**[LEGACY]** You're a Music DJ! When in voice chat you'll have the DJ role giving you full "
-                        "control of the Rythm music bot!\n\n*The Rythm bot has shutdown, until we find a new use for "
+                        "**[LEGACY]** You're a Music DJ! ~~When in voice chat you'll have the DJ role giving you full "
+                        "control of the Rythm music bot!~~\n\n*The Rythm bot has shutdown, until we find a new use for "
                         "this achievement it offers no perks.*"
                     ),
                     "🎸",
