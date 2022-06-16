@@ -57,7 +57,7 @@ class BuddyChatExtension(dippy.Extension):
             return
 
         emoji = message.content.removeprefix("!buddy ").split()[0]
-        if len(emoji) != 1:
+        if len(emoji) > 2:
             emoji = ""
 
         channel_name = emoji + await self._get_channel_name(message.mentions)
@@ -65,10 +65,27 @@ class BuddyChatExtension(dippy.Extension):
         for member in message.mentions:
             overwrites[member] = discord.PermissionOverwrite(read_messages=True)
         channel = await category.create_text_channel(name=channel_name, overwrites=overwrites)
-        mentions = ", ".join(member.mention for member in message.mentions)
-        await channel.send(
-            f"***TEST MESSAGE***"
+        member_names = ", ".join(member.display_name for member in message.mentions)
+        welcome_msg = await channel.send(
+            embed=discord.Embed(
+                title=f"Welcome {member_names} to your buddy chat!",
+                description=(
+                    "**Recommended Structure**\n"
+                    "**Daily**\n"
+                    "Check in, talk about what you've been working on and any struggles.\n"
+                    "**Weekly**\n"
+                    "Set goals for the week, review them. Have you achieved your goals? If not, why not?\n"
+                    "\n"
+                    "**Goal Ideas**\n"
+                    "- Start a new project.\n"
+                    "- Start learning a new language.\n"
+                    "- Implemenent a new feature in your project.\n"
+                    "- Spent at least two hours a day programming.\n"
+                ),
+                color=0x00FF66
+            )
         )
+        await welcome_msg.pin()
 
 
     async def _get_channel_name(self, members: list[discord.Member]) -> str:
