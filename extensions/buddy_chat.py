@@ -56,7 +56,11 @@ class BuddyChatExtension(dippy.Extension):
         if not category:
             return
 
-        channel_name = await self._get_channel_name(message.mentions)
+        emoji = message.content.removeprefix("!buddy ").split()[0]
+        if len(emoji) != 1:
+            emoji = ""
+
+        channel_name = emoji + await self._get_channel_name(message.mentions)
         overwrites = category.overwrites.copy()
         for member in message.mentions:
             overwrites[member] = discord.PermissionOverwrite(read_messages=True)
