@@ -54,6 +54,7 @@ class RaidProtection(dippy.Extension):
             )
             return
 
+        self.log.info("Creating raid protection tables")
         self.db = self.context.get(SQLAlchemyConnector)
         super().__init__()
         self.db.create_tables()
