@@ -91,3 +91,15 @@ class BuddyChatExtension(dippy.Extension):
     async def _get_channel_name(self, members: list[discord.Member]) -> str:
         slugs = (self.channel_manager.sluggify(member.name, sep="") for member in members)
         return '-'.join(self.channel_manager._get_prefix(slug) for slug in slugs)
+
+
+    @dippy.Extension.command("!close")
+    async def close_buddy_chat_command(self, message: discord.Message):
+        if not message.author.guild_permissions.kick_members:
+            return
+
+        category = await self.get_buddy_chat_category(message.guild)
+        if not category or message.channel.category != category:
+            return
+
+        await message.channel.delete()
