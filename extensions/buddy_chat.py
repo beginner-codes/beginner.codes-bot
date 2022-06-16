@@ -1,5 +1,3 @@
-from dis import disco
-from unicodedata import category
 import dippy
 import dippy.labels
 import discord
