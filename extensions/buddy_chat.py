@@ -52,10 +52,6 @@ class BuddyChatExtension(dippy.Extension):
         if not message.author.guild_permissions.kick_members:
             return
 
-        category = await self.get_buddy_chat_category(message.guild)
-        if not category:
-            return
-
         emoji = message.content.removeprefix("!buddy ").split()[0]
         if len(emoji) > 2:
             emoji = ""
