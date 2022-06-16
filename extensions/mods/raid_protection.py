@@ -13,6 +13,7 @@ from nextcord import (
 from sqlalchemy import Column, DateTime, Integer, BigInteger, String
 import dippy
 import statistics
+from bevy import Context
 
 
 class ActivityType(str, Enum):
@@ -42,10 +43,18 @@ class ActivityEntry(SQLAlchemyConnector.BaseModel):
 
 class RaidProtection(dippy.Extension):
     client: dippy.Client
-    db: SQLAlchemyConnector
     mod_manager: ModManager
+    log: dippy.Logging
+    context: Context
 
     def __init__(self):
+        if not self.context.has(SQLAlchemyConnector):
+            self.log.info(
+                "Did not load raid protection because it requires the SQLAlchemy label storage backend"
+            )
+            return
+
+        self.db = self.context.get(SQLAlchemyConnector)
         super().__init__()
         self.db.create_tables()
 
