@@ -134,7 +134,7 @@ class BuddyChatExtension(dippy.Extension):
 
 
     @dippy.Extension.command("!remove")
-    async def add_buddy_chat_command(self, message: discord.Message):
+    async def remove_buddy_chat_command(self, message: discord.Message):
         if not message.author.guild_permissions.kick_members:
             return
 
