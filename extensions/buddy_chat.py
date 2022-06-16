@@ -1,3 +1,4 @@
+from dis import disco
 from unicodedata import category
 import dippy
 import dippy.labels
@@ -117,3 +118,33 @@ class BuddyChatExtension(dippy.Extension):
             name=f"{message.channel.name}-archive", sync_permissions=True
         )
         await message.channel.send("🗂 This channel has been archived")
+
+
+    @dippy.Extension.command("!add")
+    async def add_buddy_chat_command(self, message: discord.Message):
+        if not message.author.guild_permissions.kick_members:
+            return
+
+        category = await self.get_buddy_chat_category(message.guild)
+        if not category or message.channel.category != category:
+            return
+
+        overwrites = message.channel.overwrites.copy()
+        for member in message.mentions:
+            overwrites[member] = discord.PermissionOverwrite(read_messages=True)
+        await message.channel.edit(overwrites=overwrites)
+
+
+    @dippy.Extension.command("!remove")
+    async def add_buddy_chat_command(self, message: discord.Message):
+        if not message.author.guild_permissions.kick_members:
+            return
+
+        category = await self.get_buddy_chat_category(message.guild)
+        if not category or message.channel.category != category:
+            return
+
+        overwrites = message.channel.overwrites.copy()
+        for member in message.mentions:
+            overwrites[member] = discord.PermissionOverwrite(read_messages=False)
+        await message.channel.edit(overwrites=overwrites)
