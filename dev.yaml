@@ -1,0 +1,7 @@
+labels:
+  storage: memory
+
+intents:
+  use_defaults: True
+  members: True
+  presences: True
