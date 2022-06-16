@@ -18,6 +18,6 @@ poetry install
 ## Running
 To run the bot you’ll need to be in the directory which you cloned the repo, and run the following command:
 ```sh
-poetry run python -u -m dippy -c bot.yaml -t YOUR_DISCORD_TOKEN
+poetry run python -u -m dippy -c dev.yaml -t YOUR_DISCORD_TOKEN
 ```
 This will create a virtual environment with all the required dependencies and run the Beginner.Codes bot using the experimental Dippy bot framework.
