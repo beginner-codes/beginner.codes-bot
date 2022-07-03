@@ -14,7 +14,7 @@ class GoodReadsSharingExtenson(dippy.Extension):
 
     def __init__(self):
         super().__init__()
-        self._url_regex = re.compile(r"(?:https?://)?[^/.\s]+\.[^/\s]+(?:/\S*)?")
+        self._url_regex = re.compile(r"(?:https?://)?[^/.\s]+\.[^/\s]+(?:/\S*)?", re.I)
 
     @dippy.Extension.listener("message")
     async def on_message(self, message: discord.Message):
