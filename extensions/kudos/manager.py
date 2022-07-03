@@ -126,7 +126,7 @@ class KudosManager(Injectable):
 
         await self._determine_achievements(member, kudos + amount)
 
-    async def take_kudos(self, member: Member, amount: int):
+    async def take_kudos(self, member: Member, amount: int, reason: str = ""):
         kudos = await self.get_kudos(member)
         await self.set_kudos(member, kudos - amount)
 
@@ -134,6 +134,11 @@ class KudosManager(Injectable):
         lifetime_kudos = await self.get_lifetime_kudos(member, False)
         if lifetime_kudos is None:
             await self.set_lifetime_kudos(member, kudos)
+
+        if reason:
+            await self._send_kudos_message_to_ledger(
+                member.guild, amount, reason, member.display_avatar.url
+            )
 
     async def get_kudos(self, member: Member) -> int:
         kudos = await self.labels.get(
