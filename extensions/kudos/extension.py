@@ -507,7 +507,7 @@ class KudosExtension(dippy.Extension):
                 )
 
                 notification = (
-                    f"Gave {message.author} {kudos} for their 7 day activity streak!!!"
+                    f"Gave {message.author} {kudos} kudos for their 7 day activity streak!!!"
                 )
         else:
             reason = f"{message.author.mention} has begun a new activity streak!!!  [See Message]({message.jump_url})"
