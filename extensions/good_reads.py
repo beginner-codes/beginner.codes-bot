@@ -58,8 +58,8 @@ class GoodReadsSharingExtenson(dippy.Extension):
             )
 
         confirm_message = await message.reply(
-            f"It will cost {cost} kudos to share your {nth} link this week. You have {kudos} kudos to spend. Share the "
-            f"link? (✅ yes, ❌ no)"
+            f"It will cost {cost} kudos to share your {nth} link this week. You have {kudos:,} kudos to spend. Share "
+            f"the link? (✅ yes, ❌ no)"
         )
         await confirm_message.add_reaction("✅")
         await confirm_message.add_reaction("❌")
@@ -87,7 +87,7 @@ class GoodReadsSharingExtenson(dippy.Extension):
                     message.author, cost, f"Shared a link in {message.channel.mention}!"
                 )
                 await message.reply(
-                    f"✅ You've paid {cost} kudos to share this link! You have {kudos - cost} kudos remaining.",
+                    f"✅ You've paid {cost} kudos to share this link! You have {kudos - cost:,} kudos remaining.",
                     delete_after=10,
                 )
                 await message.author.set_label(
