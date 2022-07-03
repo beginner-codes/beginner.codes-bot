@@ -1,5 +1,6 @@
 import dippy.labels
-import discord
+import nextcord
+
 from extensions.kudos.manager import KudosManager
 import re
 from datetime import timedelta, datetime, timezone
@@ -17,16 +18,16 @@ class GoodReadsSharingExtenson(dippy.Extension):
         self._url_regex = re.compile(r"(?:https?://)?[^/.\s]+\.[^/\s]+(?:/\S*)?", re.I)
 
     @dippy.Extension.listener("message")
-    async def on_message(self, message: discord.Message):
-        if message.author.bot:
-            return
+    async def on_message(self, message: nextcord.Message):
+        if self._message_should_cost_kudos(message):
+            await self._charge_for_message(message)
 
-        if message.channel.id != 659767976601583627:
-            return
+    @dippy.Extension.listener("message_edit")
+    async def on_message_edit(self, old_message: nextcord.Message, message: nextcord.Message):
+        if self._message_should_cost_kudos(message) and not self._message_should_cost_kudos(old_message):
+            await self._charge_for_message(message)
 
-        if not self._url_regex.match(message.content):
-            return
-
+    async def _charge_for_message(self, message: nextcord.Message):
         lifetime_kudos = await self.kudos.get_lifetime_kudos(message.author)
         lifetime_limit = 80
         if lifetime_kudos < lifetime_limit:
@@ -118,3 +119,12 @@ class GoodReadsSharingExtenson(dippy.Extension):
             }.get(number % 10, "th")
 
         return f"{number}{suffix}"
+
+    def _message_should_cost_kudos(self, message: nextcord.Message) -> bool:
+        if message.author.bot:
+            return False
+
+        if message.channel.id != 659767976601583627:
+            return False
+
+        return bool(self._url_regex.match(message.content))
