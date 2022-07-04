@@ -137,7 +137,7 @@ class KudosManager(Injectable):
 
         if reason:
             await self._send_kudos_message_to_ledger(
-                member.guild, amount, reason, member.display_avatar.url
+                member.guild, -amount, reason, member.display_avatar.url
             )
 
     async def get_kudos(self, member: Member) -> int:
