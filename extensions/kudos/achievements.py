@@ -110,14 +110,14 @@ class Achievements(UserDict, Injectable):
             )
         except errors.Forbidden:
             pass
-                      
+
     async def give_buddy_role(self, member: Member):
         role = utils.get(member.guild.roles, name="buddy")
         try:
             await member.add_roles(role)
             await self.client.get_channel(987141595453349928).send(
-                f"{member.mention} thank you for proving you are a dedicated member of our community!" 
-                "You're now able to our Buddy System!"
+                f"{member.mention} thank you for proving you are a dedicated member of our community! You're now able "
+                f"to use our Buddy System!"
             )
         except errors.Forbidden:
             pass

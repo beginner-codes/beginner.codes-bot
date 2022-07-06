@@ -23,8 +23,12 @@ class GoodReadsSharingExtenson(dippy.Extension):
             await self._charge_for_message(message)
 
     @dippy.Extension.listener("message_edit")
-    async def on_message_edit(self, old_message: nextcord.Message, message: nextcord.Message):
-        if self._message_should_cost_kudos(message) and not self._message_should_cost_kudos(old_message):
+    async def on_message_edit(
+        self, old_message: nextcord.Message, message: nextcord.Message
+    ):
+        if self._message_should_cost_kudos(
+            message
+        ) and not self._message_should_cost_kudos(old_message):
             await self._charge_for_message(message)
 
     async def _charge_for_message(self, message: nextcord.Message):
@@ -65,7 +69,7 @@ class GoodReadsSharingExtenson(dippy.Extension):
         await confirm_message.add_reaction("✅")
         await confirm_message.add_reaction("❌")
 
-        def check(payload):
+        def check_reactions(payload):
             return (
                 payload.message_id == confirm_message.id
                 and payload.emoji.name in "✅❌"
@@ -74,7 +78,7 @@ class GoodReadsSharingExtenson(dippy.Extension):
 
         try:
             reaction = await self.client.wait_for(
-                "raw_reaction_add", check=check, timeout=30
+                "raw_reaction_add", check=check_reactions, timeout=30
             )
         except asyncio.TimeoutError:
             await message.delete()
