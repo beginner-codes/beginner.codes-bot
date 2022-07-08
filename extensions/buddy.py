@@ -1,7 +1,8 @@
 import dippy
 import nextcord
-
+import re
 from extensions.kudos.manager import KudosManager
+
 
 class BuddyBumpExtenson(dippy.Extension):
     client: dippy.Client
@@ -10,36 +11,51 @@ class BuddyBumpExtenson(dippy.Extension):
     def __init__(self):
         super().__init__()
 
-    @dippy.Extension.listener("message")
-    async def on_message(self, message: nextcord.Message):
-        if self._message_should_cost_kudos(message):
-            await self._charge_for_message(message)
+    @dippy.Extension.listener("raw_message_edit")
+    async def on_raw_message_edit(self, payload):
+        if self._message_should_cost_kudos(payload):
+            await self._charge_for_message(payload)
 
-    async def _charge_for_message(self, message: nextcord.Message):
-        user = message.mentions[0]
+    async def _charge_for_message(self, payload):
+        message = await self.client.get_channel(payload.channel_id).fetch_message(
+            payload.message_id
+        )
+        message_description = message.embeds[1].description
+        user_id = int(re.search(r"\d+", message_description.split()[0])[0])
+        user = self.client.get_guild(payload.guild_id).get_member(user_id)
+
         kudos = await self.kudos.get_kudos(user)
-        cost = int(message.content.split()[message.content.split().index("pay")+1])
+        cost = int(
+            message_description.split()[message_description.split().index("kudos.") - 1]
+        )
 
-        if kudos < cost:
-            await message.channel.send(
-                f"🔴 {user.mention}, you don't have enough kudos! You only have {kudos} kudos left.",
-                delete_after=8,
-            )
-        else:
+        response_embed = nextcord.Embed(
+            title="🔴 Error: You don't have enough kudos!",
+            description=f"{user.mention} You only have {kudos} kudos left.",
+        )
+
+        if kudos >= cost:
             await self.kudos.take_kudos(
                 user, cost, f"Bumped a buddy post in {message.channel.mention}!"
             )
-            await message.channel.send(
-                f"🟢 {user.mention}, your bump was successful. You have {kudos - cost:,} kudos remaining.",
-                delete_after=8,
-            )
 
-    def _message_should_cost_kudos(self, message: nextcord.Message) -> bool:
-        if not message.author.bot:
+            response_embed.title = "🟢 Success: Post bumped!"
+            response_embed.description = f"{user.mention}, you paid {cost} kudos to bump a post.\nYou have {kudos - cost:,} kudos remaining."
+
+        await message.channel.send(embed=response_embed, delete_after=8)
+
+    def _message_should_cost_kudos(self, payload) -> bool:
+        if (
+            "bot" not in payload.data["author"].keys()
+            or not payload.data["author"]["bot"]
+        ):
             return False
         
-        # Replace with id of #looking-for-buddy, the channel with all the buddy posts
-        if message.channel.id != 987390245207150663:
+         # Replace with id of #looking-for-buddy, the channel with all the buddy posts
+        if payload.channel_id != 987390245207150663:
             return False
 
-        return "🟠" in message.content
+        if len(payload.data["embeds"]) < 2:
+            return False
+
+        return "🟠 Bumping post..." in payload.data["embeds"][1]["title"]
