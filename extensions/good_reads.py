@@ -131,4 +131,4 @@ class GoodReadsSharingExtenson(dippy.Extension):
         if message.channel.id != 659767976601583627:
             return False
 
-        return bool(self._url_regex.match(message.content))
+        return bool(self._url_regex.search(message.content))
