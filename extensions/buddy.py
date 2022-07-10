@@ -45,10 +45,7 @@ class BuddyBumpExtenson(dippy.Extension):
         await message.channel.send(embed=response_embed, delete_after=8)
 
     def _message_should_cost_kudos(self, payload) -> bool:
-        if (
-            "bot" not in payload.data["author"].keys()
-            or not payload.data["author"]["bot"]
-        ):
+        if not payload.data["author"].get("bot"):
             return False
         
          # Replace with id of #looking-for-buddy, the channel with all the buddy posts
