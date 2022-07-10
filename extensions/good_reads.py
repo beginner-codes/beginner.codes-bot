@@ -89,7 +89,9 @@ class GoodReadsSharingExtenson(dippy.Extension):
         else:
             if reaction.emoji.name == "✅":
                 await self.kudos.take_kudos(
-                    message.author, cost, f"Shared a link in {message.channel.mention}!"
+                    message.author,
+                    cost,
+                    f"{message.author.mention} shared a link in {message.channel.mention}!",
                 )
                 await message.reply(
                     f"✅ You've paid {cost} kudos to share this link! You have {kudos - cost:,} kudos remaining.",
