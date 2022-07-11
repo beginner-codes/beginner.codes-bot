@@ -18,10 +18,10 @@ class PrivateChatExtension(dippy.Extension):
         if not channel or message.channel.parent != channel:
             return
 
+        await message.channel.send("🗂 This channel has been archived")
         await message.channel.edit(
             archived=True, locked=True, name=f"{message.channel.name}-ARCHIVED"
         )
-        await message.channel.send("🗂 This channel has been archived")
 
     @dippy.Extension.command("!lock")
     async def lock_mod_chat_command(self, message: discord.Message):
@@ -38,11 +38,11 @@ class PrivateChatExtension(dippy.Extension):
             if mod_role not in member.roles:
                 await message.channel.remove_user(member)
 
-        await message.channel.edit(
-            archived=True, locked=True, name=f"{message.channel.name}-LOCKED"
-        )
         await message.channel.send(
             "🔒 This thread has been closed, only mods have access"
+        )
+        await message.channel.edit(
+            archived=True, locked=True, name=f"{message.channel.name}-LOCKED"
         )
 
     @dippy.Extension.command("!modchat")
