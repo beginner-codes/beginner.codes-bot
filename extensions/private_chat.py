@@ -15,7 +15,7 @@ class PrivateChatExtension(dippy.Extension):
             return
 
         channel = await self.get_mod_chat_channel(message.guild)
-        if not channel or message.thread.parent != channel:
+        if not channel or message.channel != channel:
             return
 
         await message.thread.edit(
@@ -30,7 +30,7 @@ class PrivateChatExtension(dippy.Extension):
 
         mod_role = await self.get_mod_role(message.guild)
         channel = await self.get_mod_chat_channel(message.guild)
-        if not channel or message.thread.parent != channel:
+        if not channel or message.channel != channel:
             return
 
         for thread_member in message.thread.members:
