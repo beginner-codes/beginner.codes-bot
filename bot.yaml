@@ -5,3 +5,4 @@ intents:
   use_defaults: True
   members: True
   presences: True
+  message_content: True
