@@ -18,7 +18,7 @@ class PrivateChatExtension(dippy.Extension):
         if not channel or message.channel != channel:
             return
 
-        await message.thread.edit(
+        await message.channel.edit(
             archived=True, locked=True, name=f"{message.thread.name}-ARCHIVED"
         )
         await message.channel.send("🗂 This channel has been archived")
@@ -36,12 +36,12 @@ class PrivateChatExtension(dippy.Extension):
         for thread_member in message.thread.members:
             member = channel.guild.get_member(thread_member.id)
             if mod_role not in member.roles:
-                await message.thread.remove_user(member)
+                await message.channel.remove_user(member)
 
-        await message.thread.edit(
+        await message.channel.edit(
             archived=True, locked=True, name=f"{message.thread.name}-LOCKED"
         )
-        await message.thread.send(
+        await message.channel.send(
             "🔒 This thread has been closed, only mods have access"
         )
 
