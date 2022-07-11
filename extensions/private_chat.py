@@ -33,7 +33,7 @@ class PrivateChatExtension(dippy.Extension):
         if not channel or message.channel.parent != channel:
             return
 
-        for thread_member in message.thread.members:
+        for thread_member in message.channel.members:
             member = channel.guild.get_member(thread_member.id)
             if mod_role not in member.roles:
                 await message.channel.remove_user(member)
