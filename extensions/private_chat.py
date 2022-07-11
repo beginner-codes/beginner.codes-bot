@@ -19,7 +19,7 @@ class PrivateChatExtension(dippy.Extension):
             return
 
         await message.channel.edit(
-            archived=True, locked=True, name=f"{message.thread.name}-ARCHIVED"
+            archived=True, locked=True, name=f"{message.channel.name}-ARCHIVED"
         )
         await message.channel.send("🗂 This channel has been archived")
 
@@ -39,7 +39,7 @@ class PrivateChatExtension(dippy.Extension):
                 await message.channel.remove_user(member)
 
         await message.channel.edit(
-            archived=True, locked=True, name=f"{message.thread.name}-LOCKED"
+            archived=True, locked=True, name=f"{message.channel.name}-LOCKED"
         )
         await message.channel.send(
             "🔒 This thread has been closed, only mods have access"
