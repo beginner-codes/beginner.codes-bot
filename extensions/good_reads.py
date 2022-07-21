@@ -19,16 +19,16 @@ class GoodReadsSharingExtenson(dippy.Extension):
 
     @dippy.Extension.listener("message")
     async def on_message(self, message: nextcord.Message):
-        if self._message_should_cost_kudos(message):
+        if self.message_should_cost_kudos(message):
             await self._charge_for_message(message)
 
     @dippy.Extension.listener("message_edit")
     async def on_message_edit(
         self, old_message: nextcord.Message, message: nextcord.Message
     ):
-        if self._message_should_cost_kudos(
+        if self.message_should_cost_kudos(
             message
-        ) and not self._message_should_cost_kudos(old_message):
+        ) and not self.message_should_cost_kudos(old_message):
             await self._charge_for_message(message)
 
     async def _charge_for_message(self, message: nextcord.Message):
@@ -126,7 +126,7 @@ class GoodReadsSharingExtenson(dippy.Extension):
 
         return f"{number}{suffix}"
 
-    def _message_should_cost_kudos(self, message: nextcord.Message) -> bool:
+    def message_should_cost_kudos(self, message: nextcord.Message) -> bool:
         if message.author.bot:
             return False
 
