@@ -17,7 +17,7 @@ from extensions.kudos.manager import KudosManager
 from extensions.help_channels.channel_manager import ChannelManager
 from itertools import islice
 import dippy
-import extensions.good_reads
+import extensions.shared
 
 
 FIRST_TIME_BONUS = 32
@@ -445,9 +445,7 @@ class KudosExtension(dippy.Extension):
         ):
             return
 
-        if extensions.good_reads.GoodReadsSharingExtenson.message_should_cost_kudos(
-            message
-        ):
+        if extensions.shared.message_should_cost_kudos(message):
             return
 
         veteran_member_role: Role = utils.get(

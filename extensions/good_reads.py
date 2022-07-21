@@ -6,25 +6,26 @@ import re
 from datetime import timedelta, datetime, timezone
 from math import log2
 import asyncio
+from extensions.shared import message_should_cost_kudos
 
 
-class GoodReadsSharingExtenson(dippy.Extension):
+class GoodReadsSharingExtension(dippy.Extension):
     client: dippy.Client
     labels: dippy.labels.storage.StorageInterface
     kudos: KudosManager
 
     @dippy.Extension.listener("message")
     async def on_message(self, message: nextcord.Message):
-        if self.message_should_cost_kudos(message):
+        if message_should_cost_kudos(message):
             await self._charge_for_message(message)
 
     @dippy.Extension.listener("message_edit")
     async def on_message_edit(
         self, old_message: nextcord.Message, message: nextcord.Message
     ):
-        if self.message_should_cost_kudos(
-            message
-        ) and not self.message_should_cost_kudos(old_message):
+        if message_should_cost_kudos(message) and not message_should_cost_kudos(
+            old_message
+        ):
             await self._charge_for_message(message)
 
     async def _charge_for_message(self, message: nextcord.Message):
@@ -121,17 +122,3 @@ class GoodReadsSharingExtenson(dippy.Extension):
             }.get(number % 10, "th")
 
         return f"{number}{suffix}"
-
-    @staticmethod
-    def message_should_cost_kudos(message: nextcord.Message) -> bool:
-        if message.author.bot:
-            return False
-
-        if message.channel.id != 659767976601583627:
-            return False
-
-        return bool(
-            re.search(
-                r"(?:https?://)?[^/.\s]+\.[^/\s]+(?:/\S*)?", message.content, re.I
-            )
-        )
