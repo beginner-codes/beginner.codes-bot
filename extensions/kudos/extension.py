@@ -30,7 +30,6 @@ class KudosExtension(dippy.Extension):
     log: dippy.logging.Logging
     manager: KudosManager
     help_channels: ChannelManager
-    good_reads: "extensions.good_reads.GoodReadsSharingExtenson"
 
     @dippy.Extension.command("!kudos help")
     async def kudos_help(self, message: Message):
@@ -446,7 +445,9 @@ class KudosExtension(dippy.Extension):
         ):
             return
 
-        if self.good_reads.message_should_cost_kudos(message):
+        if extensions.good_reads.GoodReadsSharingExtenson.message_should_cost_kudos(
+            message
+        ):
             return
 
         veteran_member_role: Role = utils.get(
