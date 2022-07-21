@@ -13,10 +13,6 @@ class GoodReadsSharingExtenson(dippy.Extension):
     labels: dippy.labels.storage.StorageInterface
     kudos: KudosManager
 
-    def __init__(self):
-        super().__init__()
-        self._url_regex =
-
     @dippy.Extension.listener("message")
     async def on_message(self, message: nextcord.Message):
         if self.message_should_cost_kudos(message):
@@ -134,4 +130,8 @@ class GoodReadsSharingExtenson(dippy.Extension):
         if message.channel.id != 659767976601583627:
             return False
 
-        return bool(re.search(r"(?:https?://)?[^/.\s]+\.[^/\s]+(?:/\S*)?", message.content, re.I))
+        return bool(
+            re.search(
+                r"(?:https?://)?[^/.\s]+\.[^/\s]+(?:/\S*)?", message.content, re.I
+            )
+        )
