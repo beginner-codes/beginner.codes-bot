@@ -62,11 +62,20 @@ class Achievements(UserDict, Injectable):
                     1500,
                     200,
                 ),
+                "BUDDY": Achievement(
+                    "Buddy",
+                    "People with the buddy achievement get access to our Buddy system.",
+                    "You've unlocked the Buddy achievement! You can now access and use our Buddy system.",
+                    "🤝",
+                    200,
+                    28,
+                ),
             }
         )
 
         self.on_award("CODER", self.give_veteran_members_role)
         self.on_award("MINECRAFTER", self.give_minecraft_role)
+        self.on_award("BUDDY", self.give_buddy_role)
 
     async def awarded_achievement(self, member: Member, achievement: Achievement):
         if achievement.awarded_handlers:
@@ -98,6 +107,17 @@ class Achievements(UserDict, Injectable):
                 f"mc.beginnerpy.com\nBedrock: mc.beginnerpy.com:8152\n```\n**Rules**\n- Mods that give unfair advantage"
                 f" are not allowed.\n- If your mods or custom client get you banned you may not be allowed back.\n- "
                 f"Griefing and such are not allowed."
+            )
+        except errors.Forbidden:
+            pass
+
+    async def give_buddy_role(self, member: Member):
+        role = utils.get(member.guild.roles, name="buddy")
+        try:
+            await member.add_roles(role)
+            await self.client.get_channel(987141595453349928).send(
+                f"{member.mention} thank you for proving you are a dedicated member of our community! You're now able "
+                f"to use our Buddy System!"
             )
         except errors.Forbidden:
             pass

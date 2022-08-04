@@ -6,25 +6,26 @@ import re
 from datetime import timedelta, datetime, timezone
 from math import log2
 import asyncio
+from extensions.shared import message_should_cost_kudos
 
 
-class GoodReadsSharingExtenson(dippy.Extension):
+class GoodReadsSharingExtension(dippy.Extension):
     client: dippy.Client
     labels: dippy.labels.storage.StorageInterface
     kudos: KudosManager
 
-    def __init__(self):
-        super().__init__()
-        self._url_regex = re.compile(r"(?:https?://)?[^/.\s]+\.[^/\s]+(?:/\S*)?", re.I)
-
     @dippy.Extension.listener("message")
     async def on_message(self, message: nextcord.Message):
-        if self._message_should_cost_kudos(message):
+        if message_should_cost_kudos(message):
             await self._charge_for_message(message)
 
     @dippy.Extension.listener("message_edit")
-    async def on_message_edit(self, old_message: nextcord.Message, message: nextcord.Message):
-        if self._message_should_cost_kudos(message) and not self._message_should_cost_kudos(old_message):
+    async def on_message_edit(
+        self, old_message: nextcord.Message, message: nextcord.Message
+    ):
+        if message_should_cost_kudos(message) and not message_should_cost_kudos(
+            old_message
+        ):
             await self._charge_for_message(message)
 
     async def _charge_for_message(self, message: nextcord.Message):
@@ -65,7 +66,7 @@ class GoodReadsSharingExtenson(dippy.Extension):
         await confirm_message.add_reaction("✅")
         await confirm_message.add_reaction("❌")
 
-        def check(payload):
+        def check_reactions(payload):
             return (
                 payload.message_id == confirm_message.id
                 and payload.emoji.name in "✅❌"
@@ -74,7 +75,7 @@ class GoodReadsSharingExtenson(dippy.Extension):
 
         try:
             reaction = await self.client.wait_for(
-                "raw_reaction_add", check=check, timeout=30
+                "raw_reaction_add", check=check_reactions, timeout=30
             )
         except asyncio.TimeoutError:
             await message.delete()
@@ -85,7 +86,9 @@ class GoodReadsSharingExtenson(dippy.Extension):
         else:
             if reaction.emoji.name == "✅":
                 await self.kudos.take_kudos(
-                    message.author, cost, f"Shared a link in {message.channel.mention}!"
+                    message.author,
+                    cost,
+                    f"{message.author.mention} shared a link in {message.channel.mention}!",
                 )
                 await message.reply(
                     f"✅ You've paid {cost} kudos to share this link! You have {kudos - cost:,} kudos remaining.",
@@ -119,12 +122,3 @@ class GoodReadsSharingExtenson(dippy.Extension):
             }.get(number % 10, "th")
 
         return f"{number}{suffix}"
-
-    def _message_should_cost_kudos(self, message: nextcord.Message) -> bool:
-        if message.author.bot:
-            return False
-
-        if message.channel.id != 659767976601583627:
-            return False
-
-        return bool(self._url_regex.match(message.content))

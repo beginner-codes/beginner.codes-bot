@@ -51,6 +51,7 @@ topics = [
     Topic("Game Development", "🕹"),
     Topic("Homework", "📓"),
     Topic("Machine Learning", "🧠"),
+    Topic("Databases", "📀"),
     Topic("React", PartialEmoji(name="react", id=947584730319179826)),
     Topic("Windows", "🪟", custom_value="windows-os"),
     Topic("Linux/MacOS", "🖥", custom_value="unix-os"),
