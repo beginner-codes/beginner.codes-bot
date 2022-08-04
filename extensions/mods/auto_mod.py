@@ -179,8 +179,8 @@ class AutoModExtension(dippy.Extension):
         # Allow staff to share invite links in any channel
         if (
             self.client.get_channel(720663441966366850)
-            .permissions_for(message.author)
-            .send_messages
+                .permissions_for(message.author)
+                .send_messages
         ):
             return
 
@@ -188,19 +188,8 @@ class AutoModExtension(dippy.Extension):
         if message.channel.permissions_for(message.author).manage_messages:
             return
 
-        invites = re.findall(r"discord.gg/[a-z0-9]{8,}", message.content.casefold())
+        invites = re.findall(r"discord.gg/[a-z\d]+", message.content.casefold())
         if not invites:
-            return
-
-        our_invites = {
-            invite.code.casefold() for invite in await message.guild.invites()
-        }
-        for invite in invites:
-            *_, invite_code = invite.split("/")
-            if invite_code not in our_invites:
-                break
-        else:
-            # Allow links to our server
             return
 
         try:
