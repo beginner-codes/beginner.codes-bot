@@ -176,7 +176,7 @@ class ChannelManager(Injectable):
                 num_channels -= 1
 
     async def create_new_channel(self, category: CategoryChannel):
-        channel = await category.create_text_channel(name="🙋get-help")
+        channel = await category.create_text_channel(name="🙋get-coding-help")
         await self.set_last_active(channel)
 
     async def get_categories(self, guild: Guild) -> dict[str, int]:
@@ -235,7 +235,7 @@ class ChannelManager(Injectable):
     async def setup_help_channel(self, category: CategoryChannel):
         channels = await self.get_archive_channels(category.guild)
         channel = channels[0]
-        await channel.edit(name=f"🙋get-help", category=category, sync_permissions=True)
+        await channel.edit(name=f"🙋get-coding-help", category=category, sync_permissions=True)
         await channel.send(
             view=create_view(),
             embed=Embed(
