@@ -60,7 +60,7 @@ class VoiceChatExtension(dippy.Extension):
         if not message.author.guild_permissions.administrator:
             return
 
-        await message.guild.get_label("highest-member-count", 0)
+        await message.guild.set_label("highest-member-count", 0)
         await self.check_for_highscore(message.guild)
 
     @dippy.Extension.listener("member_update")
