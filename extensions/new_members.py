@@ -55,6 +55,14 @@ class VoiceChatExtension(dippy.Extension):
             message.channel_mentions[0].id,
         )
 
+    @dippy.Extension.command("!reset member counter")
+    async def reset_member_counter(self, message: Message):
+        if not message.author.guild_permissions.administrator:
+            return
+
+        await message.guild.get_label("highest-member-count", 0)
+        await self.check_for_highscore(message.guild)
+
     @dippy.Extension.listener("member_update")
     async def member_accepts_rules(self, before: Member, after: Member):
         if before.pending and not after.pending:
