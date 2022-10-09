@@ -78,8 +78,7 @@ class VoiceChatExtension(dippy.Extension):
                 )
 
             elif (
-                count == last_highest // 100 * 100 + 10
-                and last_highest // 100 * 100 + 10 != 9000
+                count == last_highest // 100 * 100 and last_highest // 100 * 100 != 9000
             ):
                 await guild.get_channel(644329171140739126).send(
                     f"🎉🥳🎈 We've reached {count // 100 * 100:,} members!!! 🎈🥳🎉"
