@@ -85,11 +85,6 @@ class VoiceChatExtension(dippy.Extension):
                     f"🎉🥳🎈 We've reached {count // 100 * 100:,} members!!! 🎈🥳🎉"
                 )
 
-            elif last_highest <= 9000 < count:
-                await guild.get_channel(644329171140739126).send(
-                    f"🔥🎉🥳🎈✨ **We've reached ✨*{count:,}*✨ members!!!** ✨🎈🥳🎉🔥\nhttps://www.youtube.com/watch?v=SiMHTK15Pik"
-                )
-
     async def onboard_member(self, member: Member):
         await member.add_roles(member.guild.get_role(888160821673349140))
         joined = datetime.now().astimezone(timezone.utc)
