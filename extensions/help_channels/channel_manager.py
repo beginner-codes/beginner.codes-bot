@@ -155,7 +155,8 @@ class ChannelManager(Injectable):
             return
 
         channels = []
-        for channel in guild.get_channel(categories["getting-help"]).channels:
+        category_channel = await guild.fetch_channel(categories["getting-help"])
+        for channel in category_channel.channels:
             last_active = await self.get_last_active(channel)
             channels.append((channel, last_active))
 
