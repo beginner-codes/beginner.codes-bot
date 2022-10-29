@@ -103,6 +103,9 @@ class ChannelManager(Injectable):
     async def archive_channel(self, channel: TextChannel, remove_owner: bool = False):
         categories = await self.get_categories(channel.guild)
         category = channel.guild.get_channel(categories["help-archive"])
+        if channel.category == category:
+            return
+
         owner = None
         if remove_owner:
             await self.set_owner(channel, None)
@@ -235,7 +238,9 @@ class ChannelManager(Injectable):
     async def setup_help_channel(self, category: CategoryChannel):
         channels = await self.get_archive_channels(category.guild)
         channel = channels[0]
-        await channel.edit(name=f"🙋get-coding-help", category=category, sync_permissions=True)
+        await channel.edit(
+            name=f"🙋get-coding-help", category=category, sync_permissions=True
+        )
         await channel.send(
             view=create_view(),
             embed=Embed(
