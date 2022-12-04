@@ -297,8 +297,6 @@ class ChannelManager(Injectable):
                     )
                 )
             )
-            if (datetime.utcnow() - last_active) >= timedelta(minutes=15):
-                await channel.edit(position=top_channel.position)
 
         await self.labels.set(
             "text_channel", channel.id, "last-active", datetime.utcnow().isoformat()
