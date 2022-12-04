@@ -166,7 +166,7 @@ class ChannelManager(Injectable):
             f"Checking {len(channels)} channels to find any that need to be archived"
         )
         num_channels = len(channels)
-        while num_channels > 15 and channels:
+        while channels:
             channel, last_active = channels.pop()
             age = (now - last_active) / timedelta(hours=1)
             owner = await self.get_owner(channel)
