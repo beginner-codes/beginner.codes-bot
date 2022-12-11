@@ -185,33 +185,6 @@ class HelpRotatorExtension(dippy.Extension):
             interaction.channel, member, ticket.language, ticket.topics
         )
 
-    @dippy.Extension.listener("raw_reaction_add")
-    async def on_reaction_add_archive(self, reaction: RawReactionActionEvent):
-        emoji = reaction.emoji.name
-        if emoji not in "✅♻️":
-            return
-
-        channel: TextChannel = self.client.get_channel(reaction.channel_id)
-        categories = await self.manager.get_categories(channel.guild)
-        if channel.category.id != categories["help-archive"]:
-            return
-
-        member = channel.guild.get_member(reaction.user_id)
-        if not member or member.bot:
-            return
-
-        owner = await self.manager.get_owner(channel)
-        if not owner:
-            await channel.send("User is no longer a member here", delete_after=5)
-            return
-
-        staff = utils.get(channel.guild.roles, name="staff")
-        if member != owner and staff not in member.roles:
-            return
-
-        await self.manager.update_archived_channel(channel, owner)
-        await (await channel.fetch_message(reaction.message_id)).delete()
-
     def guild_cleanup_task(self, guild: Guild):
         now = datetime.utcnow()
         next_cleanup = (
