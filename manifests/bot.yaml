@@ -25,10 +25,5 @@ spec:
           env:
             - name: PRODUCTION_BOT
               value: "PRODUCTION"
-            - name: "DISCORD_TOKEN"
-              valueFrom:
-                secretKeyRef:
-                  name: discord.token
-                  key: token
             - name: "BOT_IMAGE_VERSION"
               value: "<IMAGE_VERSION>"
