@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bpy-dippy-bot
+  name: dippy-bot
   labels:
-    app: bpy-dippy-bot
+    app: dippy-bot
 spec:
   replicas: 1
   selector:
@@ -15,8 +15,8 @@ spec:
         app: beginner-py-bot
     spec:
       containers:
-        - name: bpy-dippy-bot
-          image: zzmmrmn/bpy-dippy-bot:<IMAGE_VERSION>
+        - name: dippy-bot
+          image: zzmmrmn/dippy-bot:<IMAGE_VERSION>
           envFrom:
             - configMapRef:
               name: dippy-bot-config
