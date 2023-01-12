@@ -16,6 +16,8 @@ import dippy
 import dippy.labels
 import re
 import random
+import os
+import pprint
 
 
 class ModeratorsExtension(dippy.Extension):
@@ -27,6 +29,7 @@ class ModeratorsExtension(dippy.Extension):
 
     @dippy.Extension.listener("ready")
     async def on_ready(self):
+        pprint.pprint(dict(os.environ))
         self.client.remove_command("help")
 
     @dippy.Extension.command("!lockdown")
