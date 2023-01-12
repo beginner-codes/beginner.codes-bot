@@ -19,9 +19,9 @@ spec:
           image: zzmmrmn/dippy-bot:<IMAGE_VERSION>
           envFrom:
             - configMapRef:
-              name: dippy-bot-config
+                name: dippy-bot-config
             - secretRef:
-              name: discord-bot-secrets
+                name: discord-bot-secrets
           env:
             - name: PRODUCTION_BOT
               value: "PRODUCTION"
