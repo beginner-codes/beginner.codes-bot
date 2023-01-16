@@ -31,7 +31,7 @@ class MemberCounterExtension(dippy.Extension):
         guild = channel.guild
         members = sum(not member.bot for member in guild.default_role.members)
         self.log.info(f"Updating counter {members:,} {self._last_count:,}")
-        close_achievement = members // 100 < (members + 5) // 100
+        close_achievement = self._last_count // 100 < (members + 5) // 100
         new_members = members > self._last_count
         substantial_drop = members < self._last_count - 20
         if new_members or substantial_drop or close_achievement:
