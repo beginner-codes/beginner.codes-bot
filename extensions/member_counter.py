@@ -13,7 +13,12 @@ class MemberCounterExtension(dippy.Extension):
     async def on_ready(self):
         if self._last_count == 0:
             self.log.info("Starting member counter")
+            self._parse_counter()
             self._update_member_counter()
+
+    def _parse_counter(self):
+        channel = self.client.get_channel(968972011407826954)
+        self._last_count = int(channel.name.replace(",", "").split()[-1])
 
     def _update_member_counter(self):
         self._schedule_update()
