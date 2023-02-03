@@ -56,6 +56,7 @@ class VoiceChatExtension(dippy.Extension):
 
         perms = self.get_voice_chat_perms()
         num_mods = self.get_num_mods()
+        changed = False
         if num_mods:
             changed = await self.enable_streaming()
             status = "🟢 enabled"
