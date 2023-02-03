@@ -102,7 +102,7 @@ class VoiceChatExtension(dippy.Extension):
         if not overwrites.stream:
             updated = channel.overwrites.copy()
             overwrites.update(stream=True)
-            self.log.debug(f"Everyone {everyone} {overwrites=} {updated=}")
+            self.log.info(f"Everyone {everyone} {overwrites=} {updated=}")
             updated[everyone] = overwrites
             await channel.edit(reason="Enabling streaming", overwrites=updated)
             return True
