@@ -10,6 +10,7 @@ class VoiceChatExtension(dippy.Extension):
     client: dippy.Client
     kudos: KudosManager
     labels: dippy.labels.storage.StorageInterface
+    log: dippy.logging.Logging
 
     @dippy.Extension.listener("ready")
     async def on_ready(self):
@@ -101,6 +102,7 @@ class VoiceChatExtension(dippy.Extension):
         if not overwrites.stream:
             updated = channel.overwrites.copy()
             overwrites.update(stream=True)
+            self.log.debug(f"Everyone {everyone} {overwrites=} {updated=}")
             updated[everyone] = overwrites
             await channel.edit(reason="Enabling streaming", overwrites=updated)
             return True
