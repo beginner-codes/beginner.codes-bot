@@ -41,7 +41,7 @@ class ChallengesExtension(dippy.Extension):
         if not message.author.bot:
             return
 
-        if not message.content.startswith("**"):
+        if not message.content.startswith("# "):
             return
 
         *_, title = message.content.split("\n")[0].partition(" ")
