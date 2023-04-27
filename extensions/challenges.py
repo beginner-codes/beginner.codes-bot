@@ -44,7 +44,7 @@ class ChallengesExtension(dippy.Extension):
         if not message.content.startswith("# "):
             return
 
-        *_, title = message.content.split("\n")[0].partition(" ")
+        *_, title = message.content.split("\n")[0].split(maxsplit=2)
         challenges_channel: TextChannel = self.client.get_channel(
             self.WEEKDAY_CHANNEL_ID
         )
