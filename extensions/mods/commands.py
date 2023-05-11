@@ -13,8 +13,6 @@ from extensions.mods.mod_manager import ModManager
 import dippy.labels
 import re
 import random
-import os
-import pprint
 
 
 class ModeratorsExtension(dippy.Extension):
