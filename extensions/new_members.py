@@ -13,6 +13,7 @@ class VoiceChatExtension(dippy.Extension):
     kudos: KudosManager
     labels: dippy.labels.storage.StorageInterface
     mod_manager: ModManager
+    log: dippy.Logging
 
     @dippy.Extension.listener("ready")
     async def onboard_new_members(self):
@@ -65,6 +66,7 @@ class VoiceChatExtension(dippy.Extension):
 
     @dippy.Extension.listener("member_update")
     async def member_accepts_rules(self, before: Member, after: Member):
+        self.log.info(f"Got member {before.display_name} {before.pending} {after.pending}")
         if before.pending and not after.pending:
             await asyncio.gather(
                 self.add_unwelcomed_user(after),
