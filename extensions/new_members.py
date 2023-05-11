@@ -8,7 +8,7 @@ import dippy.labels
 import dippy
 
 
-class VoiceChatExtension(dippy.Extension):
+class NewMemberExtension(dippy.Extension):
     client: dippy.Client
     kudos: KudosManager
     labels: dippy.labels.storage.StorageInterface
