@@ -84,9 +84,9 @@ class VoiceChatExtension(dippy.Extension):
             if rounded > last_highest and rounded % 10_000 == 0:
                 action = "reached" if count == rounded else "passed"
                 await guild.get_channel(644329171140739126).send(
-                    ("🎉🥳🎈" * 5 + "🥳" + "🎈🥳🎉" * 5 + "\n") * 2 +
-                    f"🎉🥳🎈 **We've {action} {rounded:,} members!!!** 🎈🥳🎉\n" +
-                    ("\n" + "🎉🥳🎈" * 5 + "🥳" + "🎈🥳🎉" * 5) * 2
+                    ("🎉🥳🎈" * 5 + "🥳" + "🎈🥳🎉" * 5 + "\n") * 2
+                    + f"🎉🥳🎈 **We've {action} {rounded:,} members!!!** 🎈🥳🎉\n"
+                    + ("\n" + "🎉🥳🎈" * 5 + "🥳" + "🎈🥳🎉" * 5) * 2
                 )
                 await guild.get_channel(644329171140739126).send(
                     "https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif"
@@ -96,7 +96,6 @@ class VoiceChatExtension(dippy.Extension):
                 await guild.get_channel(644329171140739126).send(
                     f"🎉🥳🎈 **We've {action} {rounded:,} members!!!** 🎈🥳🎉"
                 )
-
 
     async def onboard_member(self, member: Member):
         await member.add_roles(member.guild.get_role(888160821673349140))

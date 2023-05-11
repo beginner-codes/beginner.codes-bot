@@ -179,8 +179,8 @@ class AutoModExtension(dippy.Extension):
         # Allow staff to share invite links in any channel
         if (
             self.client.get_channel(720663441966366850)
-                .permissions_for(message.author)
-                .send_messages
+            .permissions_for(message.author)
+            .send_messages
         ):
             return
 
