@@ -6,13 +6,10 @@ from nextcord import (
     Member,
     Message,
     utils,
-    Permissions,
-    AllowedMentions,
 )
 from extensions.user_tracking.manager import UserTracker
 from extensions.mods.mod_settings import ModSettingsExtension
 from extensions.mods.mod_manager import ModManager
-import dippy
 import dippy.labels
 import re
 import random

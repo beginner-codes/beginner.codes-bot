@@ -14,8 +14,6 @@ from discord import (
     errors,
 )
 from extensions.kudos.manager import KudosManager
-from extensions.help_channels.channel_manager import ChannelManager
-from itertools import islice
 import dippy
 import extensions.shared
 
@@ -29,7 +27,6 @@ class KudosExtension(dippy.Extension):
     client: dippy.Client
     log: dippy.logging.Logging
     manager: KudosManager
-    help_channels: ChannelManager
 
     @dippy.Extension.command("!kudos help")
     async def kudos_help(self, message: Message):
@@ -336,14 +333,6 @@ class KudosExtension(dippy.Extension):
         if payload.emoji.name not in emoji:
             return
 
-        help_categories = await self.help_channels.get_categories(channel.guild)
-        archive_category = help_categories.get("help-archive")
-        if (
-            not channel.permissions_for(payload.member).send_messages
-            and channel.category.id != archive_category
-        ):
-            return
-
         message = await channel.fetch_message(payload.message_id)
         if message.author.bot or message.author == payload.member:
             return
@@ -378,12 +367,6 @@ class KudosExtension(dippy.Extension):
         helper_role = utils.get(message.guild.roles, name="helpers")
         multiplier = 1
         multiplier_message = ""
-        if helper_role in message.author.roles and channel.category.id in {
-            help_categories.get("getting-help"),
-            help_categories.get("help-archive"),
-        }:
-            multiplier = 2
-            multiplier_message = " (2x helper multiplier)"
 
         kudos_message = f"{payload.member.mention} gave {message.author.mention} kudos{multiplier_message}"
         await self.manager.give_kudos(
