@@ -70,7 +70,9 @@ class NewMemberExtension(dippy.Extension):
         diff = {
             name: (getattr(before, name), getattr(after, name))
             for name in dir(before)
-            if not name.startswith("_") and not callable(getattr(before, name)) and getattr(before, name) != getattr(after, name)
+            if not name.startswith("_")
+            and not callable(getattr(before, name))
+            and getattr(before, name) != getattr(after, name)
         }
         self.log.info(f"Got member {before.display_name}")
         pprint(diff)
@@ -107,10 +109,11 @@ class NewMemberExtension(dippy.Extension):
                 )
 
     async def onboard_member(self, member: Member):
-        await member.add_roles(member.guild.get_role(888160821673349140))
         joined = datetime.now().astimezone(timezone.utc)
         await member.set_label("joined", joined.isoformat())
         await self.schedule_onboarding(member, joined)
+        await asyncio.sleep(3)
+        await member.add_roles(member.guild.get_role(888160821673349140))
 
     async def schedule_onboarding(self, member: Member, joined: datetime):
         async def onboard():
