@@ -23,6 +23,12 @@ DAILY_MESSAGE_BONUS = 4
 WEEKLY_STREAK_BONUS = 16
 
 
+class DummyUser:
+    def __init__(self, id_: int, guild: Guild):
+        self.id = id_
+        self.guild = guild
+
+
 class KudosExtension(dippy.Extension):
     client: dippy.Client
     log: dippy.logging.Logging
@@ -253,10 +259,13 @@ class KudosExtension(dippy.Extension):
         if not message.author.guild_permissions.administrator:
             return
 
-        *_, kudos = message.content.rpartition(" ")
-        await self.manager.give_kudos(
-            message.mentions[0], int(kudos), "Admin adjustment"
+        user_id, _, kudos = message.content.rpartition(" ")
+        user = (
+            message.mentions[0]
+            if len(message.mentions)
+            else DummyUser(int(user_id), message.guild)
         )
+        await self.manager.give_kudos(user, int(kudos), "Admin adjustment")
         await message.channel.send(
             f"Adjusted {message.mentions[0].display_name}'s kudos by {int(kudos)}"
         )

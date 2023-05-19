@@ -11,8 +11,9 @@ from discord import (
     utils,
 )
 from extensions.kudos.achievements import Achievements, Achievement
-from typing import Optional
+from typing import Optional, Union
 import dippy.labels
+from nextcord.abc import Snowflake
 
 
 class KudosManager(Injectable):
@@ -113,18 +114,21 @@ class KudosManager(Injectable):
             text="!kudos | !kudos help"
         )
 
-    async def give_kudos(self, member: Member, amount: int, reason: str):
+    async def give_kudos(
+        self, member: Union[Member, Snowflake], amount: int, reason: str
+    ):
         kudos = await self.get_kudos(member)
         await self.set_kudos(member, kudos + amount)
 
         lifetime_kudos = await self.get_lifetime_kudos(member) or kudos
         await self.set_lifetime_kudos(member, lifetime_kudos + amount)
 
-        await self._send_kudos_message_to_ledger(
-            member.guild, amount, reason, member.display_avatar.url
-        )
+        if isinstance(member, Member):
+            await self._send_kudos_message_to_ledger(
+                member.guild, amount, reason, member.display_avatar.url
+            )
 
-        await self._determine_achievements(member, kudos + amount)
+            await self._determine_achievements(member, kudos + amount)
 
     async def take_kudos(self, member: Member, amount: int, reason: str = ""):
         kudos = await self.get_kudos(member)
