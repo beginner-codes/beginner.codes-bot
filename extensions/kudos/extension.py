@@ -259,7 +259,7 @@ class KudosExtension(dippy.Extension):
         if not message.author.guild_permissions.administrator:
             return
 
-        user_id, _, kudos = message.content.rpartition(" ")
+        *_, user_id, kudos = message.content.split()
         user = (
             message.mentions[0]
             if len(message.mentions)
