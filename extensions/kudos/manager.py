@@ -144,13 +144,17 @@ class KudosManager(Injectable):
                 member.guild, -amount, reason, member.display_avatar.url
             )
 
-    async def get_kudos(self, member: Member) -> int:
+    async def get_kudos(self, member: Union[Member, Snowflake]) -> int:
         kudos = await self.labels.get(
             f"member[{member.guild.id}]", member.id, "kudos", default=0
         )
         emoji = await self.get_kudos_emoji(member.guild)
         staff = utils.get(member.guild.roles, name="staff")
-        return max(*emoji.values(), kudos) if staff in member.roles else kudos
+
+        if staff in getattr(member, "roles", []):
+            return max(*emoji.values(), kudos)
+
+        return kudos
 
     async def get_lifetime_kudos(self, member: Member, use_default: bool = True) -> int:
         kudos = await self.labels.get(
