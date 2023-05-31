@@ -170,6 +170,7 @@ class NewMemberExtension(dippy.Extension):
         unwelcomed = await self.get_unwelcomed_users(member.guild)
         unwelcomed.append(member)
         await self._set_unwelcomed_users(member.guild, unwelcomed)
+        self.log.info(f"Added {member.display_name} to list of unwelcomed members")
 
     async def clear_unwelcomed_users(self, guild: Guild):
         await self._set_unwelcomed_users(guild, [])
