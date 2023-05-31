@@ -67,8 +67,8 @@ class NewMemberExtension(dippy.Extension):
 
     @dippy.Extension.listener("member_update")
     async def member_accepts_rules(self, before: Member, after: Member):
-        self.log.info(f"Got member {before.display_name}")
         if before.pending and not after.pending:
+            self.log.info(f"Got member {before.display_name}")
             await asyncio.gather(
                 self.add_unwelcomed_user(after),
                 self.onboard_member(after),
