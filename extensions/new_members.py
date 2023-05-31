@@ -67,15 +67,7 @@ class NewMemberExtension(dippy.Extension):
 
     @dippy.Extension.listener("member_update")
     async def member_accepts_rules(self, before: Member, after: Member):
-        diff = {
-            name: (getattr(before, name), getattr(after, name))
-            for name in dir(before)
-            if not name.startswith("_")
-            and not callable(getattr(before, name))
-            and getattr(before, name) != getattr(after, name)
-        }
         self.log.info(f"Got member {before.display_name}")
-        pprint(diff)
         if before.pending and not after.pending:
             await asyncio.gather(
                 self.add_unwelcomed_user(after),
