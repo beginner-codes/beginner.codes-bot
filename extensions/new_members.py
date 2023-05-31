@@ -153,6 +153,8 @@ class NewMemberExtension(dippy.Extension):
         if not unwelcomed_members or message.author in unwelcomed_members:
             return
 
+        welcoming = ", ".join(f"{member}<{member.id}>" for member in unwelcomed_members)
+        self.log.info(f"{message.author} is welcoming {welcoming}")
         await self._give_kudos_for_welcoming(
             message.author, len(unwelcomed_members), channel
         )
