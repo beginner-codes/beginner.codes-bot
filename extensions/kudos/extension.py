@@ -169,8 +169,8 @@ class KudosExtension(dippy.Extension):
                 color=0x4285F4,
                 description=(
                     f"{lookup_member.display_name} {'you have' if self_lookup else 'has'} "
+                    f"{'You' if self_lookup else 'They'} have received {lifetime_kudos:,} total kudos"
                     f"{user_kudos if user_kudos and user_kudos > 0 else 'no'} kudos left\n"
-                    f"{'You' if self_lookup else 'They'} have received {lifetime_kudos} total kudos"
                 ),
                 title="Kudos Stats",
             )
@@ -488,7 +488,7 @@ class KudosExtension(dippy.Extension):
             reason = f"{message.author.display_name} has sent their first [message]({message.jump_url})!!!"
             await self.manager.set_streak(message.author, 1)
 
-            notification = f"Gave {message.author} {kudos} kudos for joining us!!!"
+            notification = f"Gave {message.author.display_name} {kudos} kudos for joining us!!!"
 
         elif current_date - last_active_date < timedelta(days=2):
             current_streak += 1
