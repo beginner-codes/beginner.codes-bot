@@ -480,7 +480,7 @@ class KudosExtension(dippy.Extension):
             f"[See Message]({message.jump_url})"
         )
         notification = (
-            f"Gave {message.author} their daily {kudos} kudos bonus! Their current activity streak is "
+            f"Gave {message.author.display_name} their daily {kudos} kudos bonus! Their current activity streak is "
             f"{current_streak + 1} day{'s' * (current_streak > 0)}!"
         )
         if best_streak == 0:
