@@ -221,7 +221,7 @@ class KudosExtension(dippy.Extension):
                     lookup_member = member
                     break
 
-        leaders: dict[Member, int] = await self.manager.get_lifetime_leaderboard(message.guild, 10)
+        leaders: dict[Member, int] = await self.manager.get_lifetime_leaderboard(message.guild)
         leaderboard = []
         indexes = ["🥇", "🥈", "🥉", *(f"{i}." for i in range(4, 11))]
         found = False
