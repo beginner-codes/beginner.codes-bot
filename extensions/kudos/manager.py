@@ -55,15 +55,12 @@ class KudosManager(Injectable):
             for label in await self.labels.find(
                 f"member[{guild.id}]", key="kudos"
             )
+        } | {
+            label.id: label.value
+            for label in await self.labels.find(
+                f"member[{guild.id}]", key="lifetime_kudos"
+            )
         }
-        leaderboard.update(
-            {
-                label.id: label.value
-                for label in await self.labels.find(
-                    f"member[{guild.id}]", key="lifetime_kudos"
-                )
-            }
-        )
         return {
             guild.get_member(user_id): value
             for user_id, value in sorted(
