@@ -221,10 +221,11 @@ class KudosExtension(dippy.Extension):
                     lookup_member = member
                     break
 
-        leaders = await self.manager.get_lifetime_leaderboard(message.guild)
+        leaders: dict[Member, int] = await self.manager.get_lifetime_leaderboard(message.guild, 10)
         leaderboard = []
         indexes = ["🥇", "🥈", "🥉", *(f"{i}." for i in range(4, 11))]
         found = False
+        member: Member
         for index, (member, member_kudos) in zip(indexes, leaders.items()):
             name = member.display_name if member else "*Old Member*"
             entry = f"{index} {name} has {member_kudos:,} kudos"
