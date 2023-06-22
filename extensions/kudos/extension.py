@@ -170,7 +170,7 @@ class KudosExtension(dippy.Extension):
                 color=0x4285F4,
                 description=(
                     f"{lookup_member.display_name} {'you have' if self_lookup else 'has'} "
-                    f"{'You' if self_lookup else 'They'} have received {lifetime_kudos:,} total kudos and have"
+                    f"{'You' if self_lookup else 'They'} have received {lifetime_kudos:,} total kudos and have "
                     f"{kudos} kudos left to use.\n"
                 ),
                 title="Kudos Stats",
