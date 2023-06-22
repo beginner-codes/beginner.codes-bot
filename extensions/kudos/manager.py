@@ -50,15 +50,24 @@ class KudosManager(Injectable):
         }
 
     async def get_lifetime_leaderboard(self, guild: Guild) -> dict[Member, int]:
-        leaderboard = (
-            await self.labels.find(
-                f"member[{guild.id}]", key="lifetime_kudos"
+        leaderboard = {
+            label.id: label.value
+            for label in await self.labels.find(
+                f"member[{guild.id}]", key="kudos"
             )
+        }
+        leaderboard.update(
+            {
+                label.id: label.value
+                for label in await self.labels.find(
+                    f"member[{guild.id}]", key="lifetime_kudos"
+                )
+            }
         )
         return {
-            guild.get_member(label.id): label.value
-            for label in sorted(
-                leaderboard, key=lambda member: member.value, reverse=True
+            guild.get_member(user_id): value
+            for user_id, value in sorted(
+                leaderboard.items(), key=lambda label: label[1], reverse=True
             )
         }
 
