@@ -164,13 +164,14 @@ class KudosExtension(dippy.Extension):
             )
 
         active_days = await self.manager.get_days_active(lookup_member)
+        kudos = f"{user_kudos:,}" if user_kudos else "no"
         embed = (
             Embed(
                 color=0x4285F4,
                 description=(
                     f"{lookup_member.display_name} {'you have' if self_lookup else 'has'} "
-                    f"{'You' if self_lookup else 'They'} have received {lifetime_kudos:,} total kudos"
-                    f"{user_kudos if user_kudos and user_kudos > 0 else 'no'} kudos left\n"
+                    f"{'You' if self_lookup else 'They'} have received {lifetime_kudos:,} total kudos and have"
+                    f"{kudos} kudos left to use.\n"
                 ),
                 title="Kudos Stats",
             )
