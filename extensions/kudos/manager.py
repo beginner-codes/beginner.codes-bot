@@ -54,10 +54,6 @@ class KudosManager(Injectable):
             await self.labels.find(
                 f"member[{guild.id}]", key="lifetime_kudos"
             )
-            +
-            await self.labels.find(
-                f"member[{guild.id}]", key="kudos"
-            )
         )
         return {
             guild.get_member(label.id): label.value
