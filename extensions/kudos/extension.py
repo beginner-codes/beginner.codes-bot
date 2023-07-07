@@ -396,10 +396,10 @@ class KudosExtension(dippy.Extension):
         if kudos_reply:
             await kudos_reply.delete()
 
-        kudos_message = f"{message.author.display_name} has been given {giving * multiplier} kudos{multiplier_message} from {payload.member.display_name}."
+        kudos_message = f"{message.author.display_name} you've been given {giving * multiplier} kudos{multiplier_message} from {payload.member.display_name}."
         if num_members > 0:
             kudos_message = (
-                f"{message.author.display_name} has been given {giving * multiplier + kudos_given} kudos{multiplier_message} from {payload.member.display_name} "
+                f"{message.author.display_name} you've been given {giving * multiplier + kudos_given} kudos{multiplier_message} from {payload.member.display_name} "
                 f"and {num_members} other member{'s' * (num_members != 1)}."
             )
 
@@ -479,11 +479,11 @@ class KudosExtension(dippy.Extension):
 
         kudos = DAILY_MESSAGE_BONUS
         reason = (
-            f"{message.author.display_name} has continued their {current_streak + 1} day activity streak! "
+            f"{message.author.display_name} you've continued your {current_streak + 1} day activity streak! "
             f"[See Message]({message.jump_url})"
         )
         notification = (
-            f"Gave {message.author.display_name} their daily {kudos} kudos bonus! Their current activity streak is "
+            f"{message.author.display_name} your daily {kudos} kudos bonus! Your current activity streak is "
             f"{current_streak + 1} day{'s' * (current_streak > 0)}!"
         )
         if best_streak == 0:
@@ -491,7 +491,7 @@ class KudosExtension(dippy.Extension):
             reason = f"{message.author.display_name} has sent their first [message]({message.jump_url})!!!"
             await self.manager.set_streak(message.author, 1)
 
-            notification = f"Gave {message.author.display_name} {kudos} kudos for joining us!!!"
+            notification = f"{message.author.display_name} you have {kudos} kudos for joining us!!!"
 
         elif current_date - last_active_date < timedelta(days=2):
             current_streak += 1
@@ -501,11 +501,11 @@ class KudosExtension(dippy.Extension):
                 kudos = WEEKLY_STREAK_BONUS
                 weeks = current_streak // 7
                 reason = (
-                    f"{message.author.display_name} has messaged every day for {weeks} week{'s' * (weeks > 1)}! "
+                    f"{message.author.display_name} has messaged every day for {weeks:,} week{'s' * (weeks > 1)}! "
                     f"[See Message]({message.jump_url})"
                 )
 
-                notification = f"Gave {message.author} {kudos} kudos for their 7 day activity streak!!!"
+                notification = f"{message.author} you've received {kudos} kudos for your {weeks:,} week activity streak!!!"
         else:
             reason = f"{message.author.display_name} has begun a new activity streak!!!  [See Message]({message.jump_url})"
             await self.manager.set_streak(message.author, 1)
