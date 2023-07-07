@@ -70,22 +70,10 @@ class ModeratorsExtension(dippy.Extension):
     async def team_command(self, message: Message):
         boosters = utils.get(message.guild.roles, name="Discord Boosters!!!").members
         premium_members = utils.get(message.guild.roles, name="Premium Members").members
-        helpers = utils.get(message.guild.roles, name="helpers").members
         mods = utils.get(message.guild.roles, name="mods").members
-        staff = utils.get(message.guild.roles, name="staff").members
 
         owner = message.guild.owner
         wolf_wave_emoji = utils.get(message.guild.emojis, name="wolfwave")
-
-        show_helpers = helpers
-        if len(helpers) > 10:
-            random.shuffle(helpers)
-            show_helpers = helpers[:9]
-
-        show_helpers = sorted(show_helpers, key=lambda m: m.display_name.casefold())
-        helper_list = ", ".join(f"`{member.display_name}`" for member in show_helpers)
-        if len(helpers) > 10:
-            helper_list += f", & {len(helpers) - 9} others"
 
         embed = (
             Embed(
@@ -104,18 +92,6 @@ class ModeratorsExtension(dippy.Extension):
                 value=", ".join(
                     f"`{mod.display_name}`" for mod in mods if mod != owner
                 ),
-                inline=False,
-            )
-            .add_field(
-                name="👷Staff",
-                value=", ".join(
-                    f"`{member.display_name}`" for member in staff if member not in mods
-                ),
-                inline=False,
-            )
-            .add_field(
-                name="🙋Volunteer Helpers",
-                value=helper_list,
                 inline=False,
             )
             .set_thumbnail(url=wolf_wave_emoji.url)
