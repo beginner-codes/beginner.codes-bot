@@ -54,14 +54,6 @@ class Achievements(UserDict, Injectable):
                     "😎",
                     188,  # 4 weeks of daily activity
                 ),
-                "MINECRAFTER": Achievement(
-                    "Minecrafter",
-                    "Minecrafters get access to the Minecraft server and the Discord discussion channel.",
-                    "You're a Minecrafter! You can now access the Minecraft server and the Discord discussion channel.",
-                    "🌳",
-                    1500,
-                    200,
-                ),
                 "BUDDY": Achievement(
                     "Buddy",
                     "People with the buddy achievement get access to our Buddy system.",
@@ -74,7 +66,6 @@ class Achievements(UserDict, Injectable):
         )
 
         self.on_award("CODER", self.give_veteran_members_role)
-        self.on_award("MINECRAFTER", self.give_minecraft_role)
         self.on_award("BUDDY", self.give_buddy_role)
 
     async def awarded_achievement(self, member: Member, achievement: Achievement):
@@ -94,19 +85,6 @@ class Achievements(UserDict, Injectable):
                 f"{member.mention} you're awesome! Thank you for contributing and being such an amazing part of this "
                 f"community! Now that you've unlocked the 😎Veteran Member😎 achievement you have access to this"
                 f"channel!"
-            )
-        except errors.Forbidden:
-            pass
-
-    async def give_minecraft_role(self, member: Member):
-        role = utils.get(member.guild.roles, name="minecraft")
-        try:
-            await member.add_roles(role)
-            await self.client.get_channel(834200603474657321).send(
-                f"{member.mention} you're now able to access the Minecraft server!\n\n```\nJava Edition: "
-                f"mc.beginnerpy.com\nBedrock: mc.beginnerpy.com:8152\n```\n**Rules**\n- Mods that give unfair advantage"
-                f" are not allowed.\n- If your mods or custom client get you banned you may not be allowed back.\n- "
-                f"Griefing and such are not allowed."
             )
         except errors.Forbidden:
             pass
