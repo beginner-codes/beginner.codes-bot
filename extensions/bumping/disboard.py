@@ -299,4 +299,4 @@ class DisboardBumpReminderExtension(dippy.Extension):
 
             return self._now() - message.created_at < timedelta(days=1)
 
-        await self.bump_channel.purge(check=check)
+        # await self.bump_channel.purge(check=check)
