@@ -51,7 +51,6 @@ class DisboardBumpReminderExtension(dippy.Extension):
             self._now(), lambda: None
         )
         self._timer.cancel()
-        self.waiting = False
         self.initialized = False
 
     @property
@@ -151,11 +150,10 @@ class DisboardBumpReminderExtension(dippy.Extension):
         )
         bumper_id = await self._get_bumper_id_from_message(message)
         self.log.info(f"BUMPER ID {bumper_id!r}")
-        if not self.waiting or (not bumper_id and message.channel == self.bump_channel):
+        if not bumper_id and message.channel == self.bump_channel:
             await message.delete()
             return
 
-        self.waiting = False
         await self._clean_channel(message)
         await self._award_bump_point(message.guild.get_member(bumper_id))
         self._schedule_reminder(message.created_at + timedelta(hours=2))
@@ -268,12 +266,7 @@ class DisboardBumpReminderExtension(dippy.Extension):
         if "bump done!" not in message.embeds[0].description.casefold():
             return
 
-        url = f"https://discord.com/api/v9/channels/{message.channel.id}/messages/{message.id}"
-        headers = {"Authorization": f"Bot {self.client.http.token}"}
-        async with aiohttp.ClientSession(headers=headers) as session:
-            async with session.get(url) as response:
-                data = await response.json()
-                return int(data["interaction"]["user"]["id"])
+        return message.interaction.user.id
 
     def _now(self) -> datetime:
         return datetime.now(tz=timezone.utc)
@@ -286,7 +279,6 @@ class DisboardBumpReminderExtension(dippy.Extension):
         self._timer = CallLaterFuture(when, self._send_bump_reminder)
 
     async def _send_bump_reminder(self):
-        self.waiting = True
         await self._clean_channel()
         await self.bump_channel.send(
             f"{self.bumper_role.mention} It's been 2hrs since the last bump!\n*Use the `/bump` command now!*"
@@ -299,4 +291,4 @@ class DisboardBumpReminderExtension(dippy.Extension):
 
             return self._now() - message.created_at < timedelta(days=1)
 
-        # await self.bump_channel.purge(check=check)
+        await self.bump_channel.purge(check=check)
