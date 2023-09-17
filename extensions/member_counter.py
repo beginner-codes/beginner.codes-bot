@@ -36,7 +36,7 @@ class MemberCounterExtension(dippy.Extension):
     async def _do_update(self):
         channel = self.client.get_channel(968972011407826954)
         guild = channel.guild
-        members = sum(not member.bot for member in guild.default_role.members)
+        members = len(guild.default_role.members)
         members_k = floor(members / 100) / 10
         decimal_format = ".0" if members_k.is_integer() else ".1"
         members_counter = f"{members_k:{decimal_format}f}k"
