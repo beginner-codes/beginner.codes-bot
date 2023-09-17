@@ -20,7 +20,7 @@ class MemberCounterExtension(dippy.Extension):
 
     def _parse_counter(self):
         channel = self.client.get_channel(968972011407826954)
-        self._last_count = int(float(channel.name.replace("k", "").split()[-1]) * 1000)
+        self._last_count = int(float(channel.name.replace("k", "").replace(",", "")".split()[-1]) * 1000)
 
     def _update_member_counter(self):
         self._schedule_update()
