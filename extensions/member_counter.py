@@ -9,18 +9,18 @@ class MemberCounterExtension(dippy.Extension):
 
     def __init__(self):
         super().__init__()
-        self._last_count = 0
+        self._current_counter = ""
 
     @dippy.Extension.listener("ready")
     async def on_ready(self):
-        if self._last_count == 0:
+        if self._current_counter == "":
             self.log.info("Starting member counter")
             self._parse_counter()
             self._update_member_counter()
 
     def _parse_counter(self):
         channel = self.client.get_channel(968972011407826954)
-        self._last_count = int(float(channel.name.replace("k", "").replace(",", "")".split()[-1]) * 1000)
+        self._current_counter = channel.name.split()[-1]
 
     def _update_member_counter(self):
         self._schedule_update()
@@ -39,10 +39,8 @@ class MemberCounterExtension(dippy.Extension):
         members = sum(not member.bot for member in guild.default_role.members)
         members_k = floor(members / 100) / 10
         decimal_format = ".0" if members_k.is_integer() else ".1"
-        self.log.info(f"Updating counter {members:,} {self._last_count:,}")
-        close_achievement = self._last_count // 250 < (members + 5) // 250
-        new_members = members > self._last_count
-        substantial_drop = members < self._last_count - 5
-        if new_members or substantial_drop or close_achievement:
-            await channel.edit(name=f"📊Members: {members_k:{decimal_format}f}k")
-            self._last_count = members
+        members_counter = f"{members_k:{decimal_format}f}k"
+        self.log.info(f"Updating counter {members_k} {self._current_counter}")
+        if members_counter != self._current_counter:
+            await channel.edit(name=f"📊Members: {members_counter}")
+            self._current_counter = members_counter
