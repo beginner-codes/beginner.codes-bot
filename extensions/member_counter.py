@@ -1,3 +1,5 @@
+from math import floor
+
 import dippy
 
 
@@ -35,10 +37,12 @@ class MemberCounterExtension(dippy.Extension):
         channel = self.client.get_channel(968972011407826954)
         guild = channel.guild
         members = sum(not member.bot for member in guild.default_role.members)
+        members_k = floor(members / 100) / 10
+        decimal_format = ".0" if members_k.is_integer() else ".1"
         self.log.info(f"Updating counter {members:,} {self._last_count:,}")
         close_achievement = self._last_count // 250 < (members + 5) // 250
         new_members = members > self._last_count
         substantial_drop = members < self._last_count - 5
         if new_members or substantial_drop or close_achievement:
-            await channel.edit(name=f"📊Members: {members:,}")
+            await channel.edit(name=f"📊Members: {members_k:{decimal_format}f}k")
             self._last_count = members
