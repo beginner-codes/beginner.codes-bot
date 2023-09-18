@@ -189,7 +189,7 @@ class NewMemberExtension(dippy.Extension):
         await channel.send(
             f"{expert_emoji} {member.mention} you got {kudos} kudos for welcoming {num_welcomed} "
             f"member{'s' * (num_welcomed > 1)}!",
-            delete_after=60,
+            delete_after=5,
         )
 
     async def _set_unwelcomed_users(self, guild: Guild, unwelcomed: list[Member]):
