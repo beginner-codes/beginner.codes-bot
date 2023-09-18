@@ -482,16 +482,11 @@ class KudosExtension(dippy.Extension):
             f"{message.author.display_name} you've continued your {current_streak + 1} day activity streak! "
             f"[See Message]({message.jump_url})"
         )
-        notification = (
-            f"{message.author.display_name}, here's your daily {kudos} kudos bonus! Your current activity streak is "
-            f"{current_streak + 1} day{'s' * (current_streak > 0)}!"
-        )
+        notification = ""
         if best_streak == 0:
             kudos = FIRST_TIME_BONUS
             reason = f"{message.author.display_name} has sent their first [message]({message.jump_url})!!!"
             await self.manager.set_streak(message.author, 1)
-
-            notification = f"{message.author.display_name} you have {kudos} kudos for joining us!!!"
 
         elif current_date - last_active_date < timedelta(days=2):
             current_streak += 1
@@ -511,7 +506,8 @@ class KudosExtension(dippy.Extension):
             await self.manager.set_streak(message.author, 1)
 
         await self.manager.give_kudos(message.author, kudos, reason)
-        await message.channel.send(notification, delete_after=60)
+        if notification:
+            await message.channel.send(notification, delete_after=60)
 
     def _build_emoji(self, guild: Guild, emoji: dict[str, int]) -> str:
         return "\n".join(
