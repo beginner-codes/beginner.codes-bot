@@ -354,7 +354,7 @@ class KudosExtension(dippy.Extension):
         if giving > kudos:
             await channel.send(
                 f"{payload.member.display_name} you can't give {giving} kudos, you only have {kudos}",
-                delete_after=15,
+                delete_after=5,
             )
             return
 
@@ -369,7 +369,7 @@ class KudosExtension(dippy.Extension):
             await channel.send(
                 f"{payload.member.display_name} you can't give {message.author.display_name} more kudos right now, try "
                 f"again in {minutes} minute{'s' * (minutes != 1)}.",
-                delete_after=15,
+                delete_after=5,
             )
             await message.remove_reaction(payload.emoji, payload.member)
             return
