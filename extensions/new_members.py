@@ -79,6 +79,7 @@ class NewMemberExtension(dippy.Extension):
         if await self.mod_manager.locked_down(guild):
             return
 
+        announce_channel_id = 644299524151443487
         last_highest = await guild.get_label("highest-member-count", default=0)
         count = self.get_num_members(guild)
         if count > last_highest or last_highest - count > 20:
@@ -86,17 +87,17 @@ class NewMemberExtension(dippy.Extension):
             rounded = count // 250 * 250
             if rounded > last_highest and rounded % 10_000 == 0:
                 action = "reached" if count == rounded else "passed"
-                await guild.get_channel(644329171140739126).send(
+                await guild.get_channel(announce_channel_id).send(
                     ("🎉🥳🎈" * 5 + "🥳" + "🎈🥳🎉" * 5 + "\n") * 2
                     + f"🎉🥳🎈 **We've {action} {rounded:,} members!!!** 🎈🥳🎉\n"
                     + ("\n" + "🎉🥳🎈" * 5 + "🥳" + "🎈🥳🎉" * 5) * 2
                 )
-                await guild.get_channel(644329171140739126).send(
+                await guild.get_channel(announce_channel_id).send(
                     "https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif"
                 )
             elif rounded > last_highest:
                 action = "reached" if count == rounded else "passed"
-                await guild.get_channel(644329171140739126).send(
+                await guild.get_channel(announce_channel_id).send(
                     f"🎉🥳🎈 **We've {action} {rounded:,} members!!!** 🎈🥳🎉"
                 )
 
