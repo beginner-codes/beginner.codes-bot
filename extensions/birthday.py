@@ -18,11 +18,14 @@ class BoostersExtension(dippy.Extension):
             self.when = self.when.replace(year=self.when.year + 1)
 
     def how_many_years_old(self) -> str:
-        years = self.when.year - 2020
-        if years > 3:
-            return f'{years}th'
+        return self.ordinal(self.when.year - 2020)
 
-        return f'{years}rd'
+    def ordinal(self, n: int):
+        if 11 <= (n % 100) <= 13:
+            suffix = 'th'
+        else:
+            suffix = ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
+        return f"{n}{suffix}"
 
     def setup(self):
         self.update_next_birthday()
