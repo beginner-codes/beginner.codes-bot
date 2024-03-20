@@ -21,6 +21,12 @@ class NewMemberExtension(dippy.Extension):
         guild = self.client.get_guild(644299523686006834)
         role = guild.get_role(888160821673349140)
         for member in role.members:
+            if "mohamedhussienhassan" in member.display_name.casefold():
+                await member.ban(delete_message_seconds=60 * 60, reason="Bot accounts")
+                await member.guild.get_channel(719311864479219813).send(
+                    f"Auto banned {member.name} ({member.display_name})")
+                continue
+
             joined_time = await member.get_label("joined")
             if joined_time is None:
                 await asyncio.gather(
@@ -67,6 +73,11 @@ class NewMemberExtension(dippy.Extension):
 
     @dippy.Extension.listener("member_update")
     async def member_accepts_rules(self, before: Member, after: Member):
+        if "mohamedhussienhassan" in after.display_name.casefold():
+            await after.ban(delete_message_seconds=60*60, reason="Bot accounts")
+            await after.guild.get_channel(719311864479219813).send(f"Auto banned {after.name}")
+            return
+
         if before.pending and not after.pending:
             self.log.info(f"Got member {before.display_name}")
             await asyncio.gather(
@@ -102,11 +113,6 @@ class NewMemberExtension(dippy.Extension):
                 )
 
     async def onboard_member(self, member: Member):
-        if "mohamedhussienhassan" in member.display_name.casefold():
-            await member.ban(delete_message_seconds=60*60, reason="Bot accounts")
-            await member.guild.get_channel(719311864479219813).send(f"Auto banned {member.name} ({member.display_name})")
-            return
-
         joined = datetime.now().astimezone(timezone.utc)
         await member.set_label("joined", joined.isoformat())
         await self.schedule_onboarding(member, joined)
