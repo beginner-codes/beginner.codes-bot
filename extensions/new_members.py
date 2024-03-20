@@ -102,6 +102,11 @@ class NewMemberExtension(dippy.Extension):
                 )
 
     async def onboard_member(self, member: Member):
+        if "mohamedhussienhassan" in member.display_name.casefold():
+            await member.ban(delete_message_seconds=60*60, reason="Bot accounts")
+            await member.guild.get_channel(719311864479219813).send(f"Auto banned {member.name} ({member.display_name})")
+            return
+
         joined = datetime.now().astimezone(timezone.utc)
         await member.set_label("joined", joined.isoformat())
         await self.schedule_onboarding(member, joined)
