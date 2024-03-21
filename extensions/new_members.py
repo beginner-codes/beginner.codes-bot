@@ -2,7 +2,8 @@ from extensions.kudos.manager import KudosManager
 from extensions.mods.mod_manager import ModManager
 from nextcord import Guild, Member, Message, MessageType, TextChannel, utils
 from datetime import datetime, timedelta, timezone
-from typing import Optional, re
+from typing import Optional
+import re
 import asyncio
 import dippy.labels
 import dippy
