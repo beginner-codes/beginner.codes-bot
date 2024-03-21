@@ -2,7 +2,7 @@ from extensions.kudos.manager import KudosManager
 from extensions.mods.mod_manager import ModManager
 from nextcord import Guild, Member, Message, MessageType, TextChannel, utils
 from datetime import datetime, timedelta, timezone
-from typing import Optional
+from typing import Optional, re
 import asyncio
 import dippy.labels
 import dippy
@@ -73,7 +73,17 @@ class NewMemberExtension(dippy.Extension):
 
     @dippy.Extension.listener("member_update")
     async def member_accepts_rules(self, before: Member, after: Member):
-        if "mohamedhussienhassan" in after.display_name.casefold():
+        created = (after.created_at.year, after.created_at.month, after.created_at.day)
+        print(after.name, created, bool(re.match(r"^[A-Za-z0-9_]+_\d+$", after.name)))
+        if (
+            "mohamedhussienhassan" in after.display_name.casefold()
+            or
+            (
+                re.match(r"^[A-Za-z0-9_]+_\d+$", after.name)
+                and
+                (2024, 1, 16) <= created <= (2024, 1, 18)
+            )
+        ):
             await after.ban(delete_message_seconds=60*60, reason="Bot accounts")
             await after.guild.get_channel(719311864479219813).send(f"Auto banned {after.name}")
             return
