@@ -21,21 +21,21 @@ class NewMemberExtension(dippy.Extension):
         guild = self.client.get_guild(644299523686006834)
         role = guild.get_role(888160821673349140)
         for member in role.members:
-            if (
-                    re.match(r"^[A-Za-z0-9]+_[A-Za-z0-9_]+$", member.name)
-                    and
-                    datetime.utcnow().replace(tzinfo=timezone.utc) - member.created_at < timedelta(days=180)
-                    and
-                    member.avatar is None
-            ):
-                await member.ban(delete_message_seconds=60 * 60, reason="Bot accounts")
-                await member.guild.get_channel(719311864479219813).send(
-                    f"Auto banned {member.name} (aka {member.display_name})"
-                )
-                continue
-
             joined_time = await member.get_label("joined")
             if joined_time is None:
+                if (
+                        re.match(r"^[A-Za-z0-9]+_[A-Za-z0-9_]+$", member.name)
+                        and
+                        datetime.utcnow().replace(tzinfo=timezone.utc) - member.created_at < timedelta(days=180)
+                        and
+                        member.avatar is None
+                ):
+                    await member.ban(delete_message_seconds=60 * 60, reason="Bot accounts")
+                    await member.guild.get_channel(719311864479219813).send(
+                        f"Auto banned {member.name} (aka {member.display_name})"
+                    )
+                    continue
+
                 await asyncio.gather(
                     self.onboard_member(member),
                     self.check_for_highscore(member.guild),
