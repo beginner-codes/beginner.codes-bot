@@ -7,7 +7,6 @@ import re
 import asyncio
 import dippy.labels
 import dippy
-from pprint import pprint
 
 
 class NewMemberExtension(dippy.Extension):
@@ -22,10 +21,17 @@ class NewMemberExtension(dippy.Extension):
         guild = self.client.get_guild(644299523686006834)
         role = guild.get_role(888160821673349140)
         for member in role.members:
-            if "mohamedhussienhassan" in member.display_name.casefold():
+            if (
+                    re.match(r"^[A-Za-z0-9]+_[A-Za-z0-9_]+$", member.name)
+                    and
+                    datetime.utcnow().replace(tzinfo=timezone.utc) - member.created_at < timedelta(days=180)
+                    and
+                    member.avatar is None
+            ):
                 await member.ban(delete_message_seconds=60 * 60, reason="Bot accounts")
                 await member.guild.get_channel(719311864479219813).send(
-                    f"Auto banned {member.name} ({member.display_name})")
+                    f"Auto banned {member.name} (aka {member.display_name})"
+                )
                 continue
 
             joined_time = await member.get_label("joined")
@@ -74,19 +80,15 @@ class NewMemberExtension(dippy.Extension):
 
     @dippy.Extension.listener("member_update")
     async def member_accepts_rules(self, before: Member, after: Member):
-        created = (after.created_at.year, after.created_at.month, after.created_at.day)
-        print(after.name, created, bool(re.match(r"^[A-Za-z0-9_]+_\d+$", after.name)))
         if (
-            "mohamedhussienhassan" in after.display_name.casefold()
-            or
-            (
-                re.match(r"^[A-Za-z0-9_]+_\d+$", after.name)
-                and
-                (2024, 1, 16) <= created <= (2024, 1, 18)
-            )
+            re.match(r"^[A-Za-z0-9]+_[A-Za-z0-9_]+$", after.name)
+            and
+            datetime.utcnow().replace(tzinfo=timezone.utc) - after.created_at < timedelta(days=180)
+            and
+            after.avatar is None
         ):
             await after.ban(delete_message_seconds=60*60, reason="Bot accounts")
-            await after.guild.get_channel(719311864479219813).send(f"Auto banned {after.name}")
+            await after.guild.get_channel(719311864479219813).send(f"Auto banned {after.name} (aka {after.nick})")
             return
 
         if before.pending and not after.pending:
