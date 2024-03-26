@@ -24,7 +24,7 @@ class NewMemberExtension(dippy.Extension):
             joined_time = await member.get_label("joined")
             if joined_time is None:
                 if (
-                        re.match(r"^[A-Za-z0-9]+_[A-Za-z0-9_]+$", member.name)
+                        re.match(r"^[A-Za-z0-9]+_\d[A-Za-z0-9_]+$", member.name)
                         and
                         datetime.utcnow().replace(tzinfo=timezone.utc) - member.created_at < timedelta(days=180)
                         and
@@ -81,7 +81,7 @@ class NewMemberExtension(dippy.Extension):
     @dippy.Extension.listener("member_update")
     async def member_accepts_rules(self, before: Member, after: Member):
         if (
-            re.match(r"^[A-Za-z0-9]+_[A-Za-z0-9_]+$", after.name)
+            re.match(r"^[A-Za-z0-9]+_\d[A-Za-z0-9_]+$", after.name)
             and
             datetime.utcnow().replace(tzinfo=timezone.utc) - after.created_at < timedelta(days=180)
             and
