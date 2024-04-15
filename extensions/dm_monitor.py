@@ -35,7 +35,7 @@ class DMMonitoringExtension(dippy.Extension):
         await channel.send(
             embed=discord.Embed(
                 title=f"New DM From @{message.author} ({message.author.id})",
-                description=message.clean_content + "\n" + "\n".join(a.url for a in message.attachments),
+                description="\n".join([message.clean_content, *(a.url for a in message.attachments)]),
                 color=0xFFE873,
             ).set_footer(text=f"Bound to DM message {message.author}")
         )
