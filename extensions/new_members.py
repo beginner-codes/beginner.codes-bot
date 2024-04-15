@@ -60,6 +60,7 @@ class NewMemberExtension(dippy.Extension):
 
     @dippy.Extension.listener("member_join")
     async def auto_ban_bots(self, member: Member):
+        print(f"{member.name} has joined", end="")
         if (
             re.match(r"^[A-Za-z0-9]+_\d[A-Za-z0-9_.]+$", member.name)
             and
@@ -69,7 +70,11 @@ class NewMemberExtension(dippy.Extension):
         ):
             await member.ban(delete_message_seconds=60*60, reason="Bot accounts")
             await member.guild.get_channel(719311864479219813).send(f"Auto banned {member.name} (aka {member.nick})*")
+            print(" (banned)")
             return
+
+        print("")
+
 
     @dippy.Extension.command("!set welcome channel")
     async def set_welcome_channel(self, message: Message):
