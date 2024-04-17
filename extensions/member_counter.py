@@ -30,7 +30,6 @@ class MemberCounterExtension(dippy.Extension):
         self.client.loop.create_task(self._do_update())
 
     def _schedule_update(self):
-        self.log.info("Scheduling next member count update")
         self.client.loop.call_later(90, self._update_member_counter)
 
     async def _do_update(self):
@@ -40,7 +39,7 @@ class MemberCounterExtension(dippy.Extension):
         members_k = floor(members / 100) / 10
         decimal_format = ".0" if members_k.is_integer() else ".1"
         members_counter = f"{members_k:{decimal_format}f}k"
-        self.log.info(f"Updating counter {members_k} {self._current_counter}")
         if members_counter != self._current_counter:
+            self.log.info(f"Updating counter {members_k} {self._current_counter}")
             await channel.edit(name=f"📊Members: {members_counter}")
             self._current_counter = members_counter
