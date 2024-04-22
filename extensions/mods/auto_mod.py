@@ -382,4 +382,6 @@ class AutoModExtension(dippy.Extension):
         }
 
     def escape_links(self, content: str) -> str:
-        return re.sub(r"(http[s]?://)(.+?)(\s|\/|$)", r"\1 \2 \3", content)
+        escaped = re.sub(r"(http[s]?://)(.+?)(\s|\/|$)", r"\1 \2 \3", content)
+        escaped = re.sub(r"discord\.gg", r"discord . gg", escaped)
+        return escaped
