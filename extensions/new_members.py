@@ -21,13 +21,7 @@ class NewMemberExtension(dippy.Extension):
         guild = self.client.get_guild(644299523686006834)
         role = guild.get_role(888160821673349140)
         for member in role.members:
-            if (
-                    re.match(r"^[A-Za-z0-9]+_\d[A-Za-z0-9_.]+$", member.name)
-                    and
-                    datetime.utcnow().replace(tzinfo=timezone.utc) - member.created_at < timedelta(days=180)
-                    and
-                    member.avatar is None
-            ):
+            if self._is_bot(member):
                 await member.ban(delete_message_seconds=60 * 60, reason="Bot accounts")
                 await member.guild.get_channel(719311864479219813).send(
                     f"Auto banned {member.name} (aka {member.display_name})"
@@ -61,19 +55,27 @@ class NewMemberExtension(dippy.Extension):
     @dippy.Extension.listener("member_join")
     async def auto_ban_bots(self, member: Member):
         print(f"{member.name} has joined", end="")
-        if (
-            re.match(r"^[A-Za-z0-9]+_\d[A-Za-z0-9_.]+$", member.name)
-            and
-            datetime.utcnow().replace(tzinfo=timezone.utc) - member.created_at < timedelta(days=180)
-            and
-            member.avatar is None
-        ):
+        if self._is_bot(member):
             await member.ban(delete_message_seconds=60*60, reason="Bot accounts")
             await member.guild.get_channel(719311864479219813).send(f"Auto banned {member.name} (aka {member.nick})*")
             print(" (banned)")
             return
 
         print("")
+
+
+    def _is_bot(self, member: Member) -> bool:
+        return (
+            re.match(r"^[A-Za-z0-9]+_\d[A-Za-z0-9_.]+$", member.name)
+            and
+            datetime.utcnow().replace(tzinfo=timezone.utc) - member.created_at < timedelta(days=180)
+            and
+            member.avatar is None
+        ) or (
+            "announcement" in member.name.casefold()
+            or
+            "announcement" in member.nick.casefold()
+        )
 
 
     @dippy.Extension.command("!set welcome channel")
