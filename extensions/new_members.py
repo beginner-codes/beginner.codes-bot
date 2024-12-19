@@ -176,6 +176,8 @@ class NewMemberExtension(dippy.Extension):
 
     @dippy.Extension.listener("message")
     async def welcome_messages(self, message: Message):
+        return # Disabled as we test a proper introductions channel
+
         if message.author.bot or not isinstance(message.channel, TextChannel):
             return
 
