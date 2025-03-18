@@ -10,6 +10,7 @@ from discord import (
     RawReactionActionEvent,
     Role,
     TextChannel,
+    Thread,
     utils,
     errors,
 )
@@ -446,8 +447,12 @@ class KudosExtension(dippy.Extension):
             message.guild.roles, name="veteran members"
         )
         # If the send messages permission could be none, so explicitly check for false
-        veteran_members_overwrites = message.channel.overwrites_for(veteran_member_role)
-        everyone_overwrites = message.channel.overwrites_for(message.guild.default_role)
+        channel = message.channel
+        if isinstance(channel, Thread):
+            channel = channel.parent
+
+        veteran_members_overwrites = channel.overwrites_for(veteran_member_role)
+        everyone_overwrites = channel.overwrites_for(message.guild.default_role)
         veteran_members_can_view = (
             veteran_members_overwrites.view_channel is not False
             and (
