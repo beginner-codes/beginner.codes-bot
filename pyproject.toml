@@ -1,14 +1,17 @@
 [tool.poetry]
-package-mode = false
+name = "beginner.py"
+version = "0.1.1-alpha.0"
+description = ""
 authors = ["Zech Zimmerman <hi@zech.codes>"]
 
 [tool.poetry.dependencies]
-python = "^3.12"
-pyyaml = "^6.0.2"
-sqlalchemy = "^1.0"
-psycopg2-binary = "^2.9.10"
-arrow = "^1.3.0"
-dippy-bot = "^0.1.1a28"
+python = "^3.9"
+PyYAML = "^5.4.1"
+SQLAlchemy = "^1.4.1"
+psycopg2-binary = "^2.8.6"
+arrow = "^1.1.0"
+nextcord = "^2.0.0-alpha.2"
+"dippy.bot" = "^0.1.1-alpha.28"
 
 [tool.poetry.dev-dependencies]
 
