@@ -6,13 +6,13 @@ description = ""
 authors = ["Zech Zimmerman <hi@zech.codes>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-PyYAML = "^5.4.1"
+python = "^3.12"
 SQLAlchemy = "^1.4.1"
 psycopg2-binary = "^2.8.6"
 arrow = "^1.1.0"
 nextcord = "^2.0.0-alpha.2"
 "dippy.bot" = "^0.1.1-alpha.28"
+pyyaml = "^6.0.2"
 
 [tool.poetry.dev-dependencies]
 
