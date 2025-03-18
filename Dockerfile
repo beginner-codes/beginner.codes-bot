@@ -1,4 +1,4 @@
-FROM python:3.9.2-slim-buster
+FROM python:3.12-slim-bookworm
 MAINTAINER Zech Zimmerman "hi@zech.codes"
 
 WORKDIR /usr/src/app
