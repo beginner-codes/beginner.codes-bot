@@ -9,6 +9,7 @@ RUN poetry config virtualenvs.in-project true
 COPY pyproject.toml .
 COPY poetry.lock .
 RUN poetry install
+RUN python -m pip install --upgrade nextcord
 
 WORKDIR /usr/src/app
 
