@@ -1,7 +1,5 @@
 [tool.poetry]
-name = "beginner.py"
-version = "0.1.1-alpha.0"
-description = ""
+package-mode = false
 authors = ["Zech Zimmerman <hi@zech.codes>"]
 
 [tool.poetry.dependencies]
