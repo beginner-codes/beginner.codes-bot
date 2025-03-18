@@ -3,7 +3,7 @@ MAINTAINER Zech Zimmerman "hi@zech.codes"
 
 WORKDIR /usr/src/app
 
-RUN pip install --no-cache-dir poetry
+RUN pip install --no-cache-dir poetry~=1.0
 RUN poetry config virtualenvs.in-project true
 
 COPY pyproject.toml .
