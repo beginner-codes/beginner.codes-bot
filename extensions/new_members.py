@@ -74,7 +74,7 @@ class NewMemberExtension(dippy.Extension):
         ) or (
             "announcement" in member.name.casefold()
             or
-            "announcement" in member.nick.casefold()
+            "announcement" in member.display_name.casefold()
         )
 
 
