@@ -435,7 +435,6 @@ class KudosExtension(dippy.Extension):
     async def on_message(self, message: Message):
         if (
             message.author.bot
-            or not isinstance(message.channel, TextChannel)
             or message.type == MessageType.new_member
         ):
             return
