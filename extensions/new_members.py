@@ -9,6 +9,26 @@ import dippy.labels
 import dippy
 
 
+KNOWN_BOT_FRUIT_NAMES = (
+    "mango",
+    "pear",
+    "cherry",
+    "banana",
+    "blueberry",
+    "peach",
+    "plum",
+    "orange",
+    "fig",
+    "grape",
+    "apple",
+    "pineapple",
+    "blackberry",
+    "passionfruit",
+    "cranberry",
+    "tangerine",
+)
+
+
 class NewMemberExtension(dippy.Extension):
     client: dippy.Client
     kudos: KudosManager
@@ -75,7 +95,7 @@ class NewMemberExtension(dippy.Extension):
             "announcement" in member.name.casefold()
             or
             "announcement" in member.display_name.casefold()
-        )
+        ) or any(name.casefold().endswith(KNOWN_BOT_FRUIT_NAMES) for name in (member.name, member.nick))
 
 
     @dippy.Extension.command("!set welcome channel")
