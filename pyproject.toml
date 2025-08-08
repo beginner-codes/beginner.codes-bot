@@ -13,10 +13,6 @@ arrow = "^1.1.0"
 nextcord = "^2.6.0"
 "dippy.bot" = "^0.1.1-alpha.28"
 
-[[tool.poetry.source]]
-name = "pypi"
-url = "https://pypi.org/simple"
-priority = "primary"
 
 [tool.poetry.dev-dependencies]
 

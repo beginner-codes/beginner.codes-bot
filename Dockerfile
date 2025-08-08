@@ -1,9 +1,9 @@
-FROM python:3.9.2-slim-buster
-MAINTAINER Zech Zimmerman "hi@zech.codes"
+FROM python:3.12-slim
+LABEL maintainer="Zech Zimmerman <hi@zech.codes>"
 
 WORKDIR /usr/src/app
 
-RUN pip install --no-cache-dir poetry~=1.0
+RUN pip install --no-cache-dir poetry~=1.8
 RUN poetry config virtualenvs.in-project true
 
 COPY pyproject.toml .
@@ -13,7 +13,7 @@ RUN poetry install
 WORKDIR /usr/src/app
 
 RUN mkdir -p /usr/src/app/tmp
-ENV TMPDIR /usr/src/app/tmp
+ENV TMPDIR="/usr/src/app/tmp"
 
 COPY bot.yaml .
 COPY disallowed-prefixes.txt .
