@@ -1,6 +1,6 @@
 import dippy.labels
 import dippy
-import discord
+import nextcord
 import re
 from nextcord import (
     ButtonStyle,

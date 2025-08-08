@@ -1,6 +1,6 @@
 import dippy.labels
 import dippy
-import discord
+import nextcord
 import re
 
 
@@ -13,7 +13,7 @@ class DMMonitoringExtension(dippy.Extension):
         self.log_channel = None
 
     @dippy.Extension.command("!set dm logging channel")
-    async def set_logging_channel(self, message: discord.Message):
+    async def set_logging_channel(self, message: nextcord.Message):
         if not message.author.guild_permissions.kick_members:
             return
 
@@ -24,16 +24,16 @@ class DMMonitoringExtension(dippy.Extension):
         await channel.send("This channel is now monitoring DMs")
 
     @dippy.Extension.listener("message")
-    async def on_message(self, message: discord.Message):
+    async def on_message(self, message: nextcord.Message):
         if (
-            not isinstance(message.channel, discord.DMChannel)
+            not isinstance(message.channel, nextcord.DMChannel)
             or message.author == self.client.user
         ):
             return
 
         channel = await self.get_logging_channel()
         await channel.send(
-            embed=discord.Embed(
+            embed=nextcord.Embed(
                 title=f"New DM From @{message.author} ({message.author.id})",
                 description="\n".join([message.clean_content, *(a.url for a in message.attachments)]),
                 color=0xFFE873,
@@ -49,7 +49,7 @@ class DMMonitoringExtension(dippy.Extension):
         if not warned:
             await message.channel.send(
                 message.author.mention,
-                embed=discord.Embed(
+                embed=nextcord.Embed(
                     title="Hi!",
                     description=(
                         "Feel free to use my commands here in my DMs, I just want you to be aware that all messages are"
@@ -64,7 +64,7 @@ class DMMonitoringExtension(dippy.Extension):
                 "user", message.author.id, "dm-logging-channel-warning", True
             )
 
-    async def get_logging_channel(self) -> discord.TextChannel:
+    async def get_logging_channel(self) -> nextcord.TextChannel:
         if not self.log_channel:
             self.log_channel = self.client.get_channel(
                 await self.labels.get("guild", -1, "dm-logging-channel")

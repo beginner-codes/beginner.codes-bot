@@ -1,4 +1,4 @@
-from discord import AllowedMentions, Guild, Member, Message
+from nextcord import AllowedMentions, Guild, Member, Message
 import dippy.labels
 import dippy
 

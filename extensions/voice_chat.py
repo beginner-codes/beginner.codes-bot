@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from discord import Member, PermissionOverwrite, VoiceChannel, VoiceState, utils
+from nextcord import Member, PermissionOverwrite, VoiceChannel, VoiceState, utils
 from extensions.kudos.manager import KudosManager
 import asyncio
 import dippy

@@ -1,6 +1,6 @@
 import dippy
 import dippy.labels
-from discord import *
+from nextcord import *
 
 
 class SetupModelsExtension(dippy.Extension):

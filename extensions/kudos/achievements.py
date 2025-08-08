@@ -2,7 +2,7 @@ from bevy import Injectable
 from collections import UserDict
 from dataclasses import dataclass, field
 from dippy import Client
-from discord import Member, utils, errors
+from nextcord import Member, utils, errors
 from typing import Callable, Coroutine
 
 

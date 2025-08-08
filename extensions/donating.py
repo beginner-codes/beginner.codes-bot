@@ -1,4 +1,4 @@
-from discord import Message
+from nextcord import Message
 import dippy
 
 

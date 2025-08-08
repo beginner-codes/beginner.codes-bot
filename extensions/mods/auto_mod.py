@@ -24,8 +24,6 @@ class AutoModExtension(dippy.Extension):
         self._warned = {}
         self._muting = set()
 
-    def mute_role(self, guild: Guild) -> Role:
-        return utils.get(guild.roles, name="Muted")
 
     @dippy.Extension.listener("message")
     async def on_message(self, message: Message):
@@ -39,7 +37,7 @@ class AutoModExtension(dippy.Extension):
 
         if (
             message.author.id in self._muting
-            or self.mute_role(message.guild) in message.author.roles
+            or (message.author.communication_disabled_until and message.author.communication_disabled_until > datetime.utcnow())
         ):
             return
 
@@ -203,9 +201,9 @@ class AutoModExtension(dippy.Extension):
             num_scam_links,
         ) = self._metrics_on_messages_from_member(member, last_warned)
 
-        content = self.escape_links(message.clean_content)
-        wrapped = "\n> ".join(wrap(content, 80))
         if member.id == 335491211039080458:
+            content = self.escape_links(message.clean_content)
+            wrapped = "\n> ".join(wrap(content, 80))
             print(
                 f"Member Spam Stats\n"
                 f"- Messages last 5 seconds:  {num_messages_last_five_seconds}\n"
@@ -276,7 +274,8 @@ class AutoModExtension(dippy.Extension):
 
         if should_mute:
             self._muting.add(member.id)
-            await member.add_roles(self.mute_role(member.guild))
+            timeout_duration = timedelta(hours=24)
+            await member.edit(timeout=timeout_duration, reason="Auto-moderation violation")
             self._muting.remove(member.id)
 
         if (
@@ -293,7 +292,7 @@ class AutoModExtension(dippy.Extension):
         if too_many_everyone_mentions_with_nitro or too_many_scam_links:
             m: Message = (await channel.history(limit=1).flatten())[0]
             await channel.send(
-                f"{member.mention} you've been muted for possibly sharing scams.",
+                f"{member.mention} you've been timed out for possibly sharing scams.",
                 delete_after=5,
             )
         else:
@@ -301,10 +300,19 @@ class AutoModExtension(dippy.Extension):
 
         if should_mute:
             mods: Role = channel.guild.get_role(644390354157568014)
-            await self.client.get_channel(728249959098482829).send(
-                f"{mods.mention} please review {member.mention}'s behavior in {channel.mention} {m.jump_url}.\nUse "
-                f"`!unmute` to remove their mute.\nUser's message:\n> {wrapped[:900]}"
+            mod_channel = self.client.get_channel(728249959098482829)
+            await mod_channel.send(
+                f"{mods.mention} please review {member.mention}'s behavior in {channel.mention} {m.jump_url}.\n"
+                f"Use Discord's timeout management to remove the timeout.\nOriginal message:"
             )
+            # Forward the actual message
+            try:
+                await message.forward(mod_channel)
+            except Exception as e:
+                # Fallback to text if forwarding fails
+                content = self.escape_links(message.clean_content)
+                wrapped = "\n> ".join(wrap(content, 80))
+                await mod_channel.send(f"```\n{wrapped[:900]}\n```")
         self._warned[member.id] = datetime.utcnow()
 
     async def log_scam_links(self, links: set[str]):

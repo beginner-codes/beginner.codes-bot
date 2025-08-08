@@ -2,7 +2,7 @@ from datetime import datetime
 import asyncio
 import dippy
 import dippy.labels
-import discord
+import nextcord
 
 
 class MinecraftExtension(dippy.Extension):
@@ -11,7 +11,7 @@ class MinecraftExtension(dippy.Extension):
     labels: dippy.labels.storage.StorageInterface
 
     @dippy.Extension.command("!minecraft")
-    async def minecraft_command(self, message: discord.Message):
+    async def minecraft_command(self, message: nextcord.Message):
         if message.channel.id != 834200603474657321:
             return
 

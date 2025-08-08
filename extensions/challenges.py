@@ -1,6 +1,6 @@
 import re
 
-from discord import Embed, Message, TextChannel
+from nextcord import Embed, Message, TextChannel
 from extensions.kudos.manager import KudosManager
 import dippy.labels
 

@@ -1,5 +1,5 @@
 from dippy import Extension
-from discord import Embed, Guild, Message, Role, TextChannel
+from nextcord import Embed, Guild, Message, Role, TextChannel
 from typing import Optional
 
 

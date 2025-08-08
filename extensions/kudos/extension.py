@@ -1,6 +1,6 @@
 import re
 from datetime import datetime, timedelta, timezone
-from discord import (
+from nextcord import (
     AllowedMentions,
     Embed,
     Guild,

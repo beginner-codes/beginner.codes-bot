@@ -1,6 +1,6 @@
 from datetime import datetime
 import dippy.labels
-import discord
+import nextcord
 import nextcord.types.threads
 
 
@@ -10,7 +10,7 @@ class PrivateChatExtension(dippy.Extension):
     labels: dippy.labels.storage.StorageInterface
 
     @dippy.Extension.command("!archive")
-    async def archive_mod_chat_command(self, message: discord.Message):
+    async def archive_mod_chat_command(self, message: nextcord.Message):
         if not message.author.guild_permissions.kick_members:
             return
 
@@ -24,7 +24,7 @@ class PrivateChatExtension(dippy.Extension):
         )
 
     @dippy.Extension.command("!lock")
-    async def lock_mod_chat_command(self, message: discord.Message):
+    async def lock_mod_chat_command(self, message: nextcord.Message):
         if not message.author.guild_permissions.kick_members:
             return
 
@@ -46,7 +46,7 @@ class PrivateChatExtension(dippy.Extension):
         )
 
     @dippy.Extension.command("!modchat")
-    async def mod_chat_command(self, message: discord.Message):
+    async def mod_chat_command(self, message: nextcord.Message):
         if not message.author.guild_permissions.kick_members:
             return
 
@@ -80,11 +80,11 @@ class PrivateChatExtension(dippy.Extension):
         )
 
     @dippy.Extension.command("!set modchat channel")
-    async def set_mod_chat_channel_command(self, message: discord.Message):
+    async def set_mod_chat_channel_command(self, message: nextcord.Message):
         if not message.author.guild_permissions.administrator:
             return
 
-        guild: discord.Guild = message.guild
+        guild: nextcord.Guild = message.guild
         channel = message.channel_mentions and message.channel_mentions[0]
         if not channel:
             await message.channel.send(f"You must mention a channel")
@@ -96,11 +96,11 @@ class PrivateChatExtension(dippy.Extension):
         )
 
     @dippy.Extension.command("!set mod role")
-    async def set_mod_role_command(self, message: discord.Message):
+    async def set_mod_role_command(self, message: nextcord.Message):
         if not message.author.guild_permissions.administrator:
             return
 
-        guild: discord.Guild = message.guild
+        guild: nextcord.Guild = message.guild
         role = message.role_mentions and message.role_mentions[0]
         if not role:
             await message.channel.send(f"You must mention a role")
@@ -109,18 +109,18 @@ class PrivateChatExtension(dippy.Extension):
         await self.set_mod_role(guild, role)
         await message.channel.send(f"Set {role} as the mod role {guild.name}")
 
-    async def get_mod_chat_channel(self, guild: discord.Guild) -> discord.TextChannel:
+    async def get_mod_chat_channel(self, guild: nextcord.Guild) -> nextcord.TextChannel:
         return guild.get_channel(
             await self.labels.get("guild", guild.id, "mod-chat-channel")
         )
 
-    async def get_mod_role(self, guild: discord.Guild) -> discord.Role:
+    async def get_mod_role(self, guild: nextcord.Guild) -> nextcord.Role:
         return guild.get_role(await self.labels.get("guild", guild.id, "mod-role"))
 
     async def set_mod_chat_channel(
-        self, guild: discord.Guild, channel: discord.TextChannel
+        self, guild: nextcord.Guild, channel: nextcord.TextChannel
     ):
         await self.labels.set("guild", guild.id, "mod-chat-channel", channel.id)
 
-    async def set_mod_role(self, guild: discord.Guild, role: discord.Role):
+    async def set_mod_role(self, guild: nextcord.Guild, role: nextcord.Role):
         await self.labels.set("guild", guild.id, "mod-role", role.id)

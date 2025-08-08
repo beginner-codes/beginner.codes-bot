@@ -1,6 +1,6 @@
 from bevy import Injectable
 from datetime import datetime, timedelta
-from discord import (
+from nextcord import (
     Embed,
     Emoji,
     Guild,

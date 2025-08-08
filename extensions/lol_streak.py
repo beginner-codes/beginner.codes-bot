@@ -1,5 +1,5 @@
 import dippy.labels
-import discord
+import nextcord
 
 
 class LolStreakExtension(dippy.Extension):
@@ -10,7 +10,7 @@ class LolStreakExtension(dippy.Extension):
         super().__init__()
         self.lol_counts = {}
 
-    async def get_count(self, channel: discord.TextChannel) -> int:
+    async def get_count(self, channel: nextcord.TextChannel) -> int:
         if channel.id not in self.lol_counts:
             self.lol_counts[channel.id] = await channel.get_label(
                 "lol_count", default=0
@@ -18,12 +18,12 @@ class LolStreakExtension(dippy.Extension):
 
         return self.lol_counts[channel.id]
 
-    async def set_count(self, channel: discord.TextChannel, count: int):
+    async def set_count(self, channel: nextcord.TextChannel, count: int):
         self.lol_counts[channel.id] = count
         await channel.set_label("lol_count", count)
 
     @dippy.Extension.listener("message")
-    async def on_message(self, message: discord.Message):
+    async def on_message(self, message: nextcord.Message):
         if message.author.bot:
             return
 
@@ -38,5 +38,5 @@ class LolStreakExtension(dippy.Extension):
         if lol_count > 1:
             await message.channel.send(
                 f"{message.author.mention} has broken the {lol_count} LOL streak 😟",
-                allowed_mentions=discord.AllowedMentions(users=False),
+                allowed_mentions=nextcord.AllowedMentions(users=False),
             )

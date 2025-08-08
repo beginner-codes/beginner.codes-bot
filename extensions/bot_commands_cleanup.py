@@ -1,10 +1,10 @@
 import dippy
-import discord
+import nextcord
 
 
 class PrivateChatExtension(dippy.Extension):
     @dippy.Extension.listener("message")
-    async def on_message(self, message: discord.Message):
+    async def on_message(self, message: nextcord.Message):
         if message.channel.id != 850187697397432361:
             return
 

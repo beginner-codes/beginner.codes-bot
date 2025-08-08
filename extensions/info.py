@@ -1,4 +1,4 @@
-from discord import Embed, Message
+from nextcord import Embed, Message
 import dippy
 
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 from bevy import Injectable
 from dataclasses import dataclass, field
 from dippy.labels.storage import StorageInterface
-from discord import Member
+from nextcord import Member
 from datetime import datetime
 from typing import Optional, Union
 
