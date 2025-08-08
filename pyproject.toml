@@ -6,8 +6,8 @@ authors = ["Zech Zimmerman <hi@zech.codes>"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-PyYAML = "^5.4.1"
-SQLAlchemy = "^1.4.1"
+PyYAML = "^6.0"
+SQLAlchemy = "^2.0.0"
 psycopg2-binary = "^2.8.6"
 arrow = "^1.1.0"
 nextcord = "^2.6.0"
