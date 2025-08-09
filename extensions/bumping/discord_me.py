@@ -16,7 +16,7 @@ class DiscordMeBumpReminderExtension(dippy.Extension):
         channel = self.client.get_channel(813085810114297876)
         role = self.client.get_guild(644299523686006834).get_role(702177774315634788)
         await channel.send(
-            f"{role.mention} time for the Discord.me bump https://nextcord.me/dashboard"
+            f"{role.mention} time for the Discord.me bump https://discord.me/dashboard"
         )
 
     async def schedule_next(self):
