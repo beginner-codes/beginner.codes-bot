@@ -48,6 +48,9 @@ class AutoModExtension(dippy.Extension):
 
     @dippy.Extension.listener("message_edit")
     async def on_message_edit(self, _, message: Message):
+        if message.author.bot:
+            return
+        
         content = message.content.casefold()
         if "@everyone" in content or "@here" in content:
             await message.channel.send(
