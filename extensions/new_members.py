@@ -93,7 +93,7 @@ class NewMemberExtension(dippy.Extension):
             "announcement" in member.name.casefold()
             or
             "announcement" in member.display_name.casefold()
-        ) or any(name.casefold().endswith(KNOWN_BOT_FRUIT_NAMES) for name in (member.name, member.nick))
+        ) or any(name.casefold().endswith(KNOWN_BOT_FRUIT_NAMES) for name in (member.name, member.nick) if name)
 
 
     @dippy.Extension.command("!set welcome channel")
