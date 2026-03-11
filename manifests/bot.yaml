@@ -17,6 +17,13 @@ spec:
       containers:
         - name: dippy-bot
           image: zzmmrmn/dippy-bot:<IMAGE_VERSION>
+          resources:
+            requests:
+              cpu: 25m
+              memory: 384Mi
+            limits:
+              cpu: 200m
+              memory: 576Mi
           envFrom:
             - configMapRef:
                 name: dippy-bot-config
