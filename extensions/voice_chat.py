@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 from nextcord import Member, PermissionOverwrite, VoiceChannel, VoiceState, utils
-from extensions.kudos.manager import KudosManager
 import asyncio
 import dippy
 import dippy.labels

@@ -1,4 +1,3 @@
-from extensions.kudos.manager import KudosManager
 from extensions.mods.mod_manager import ModManager
 from nextcord import Guild, Member, Message, MessageType, TextChannel, utils
 from datetime import datetime, timedelta, timezone
@@ -31,7 +30,6 @@ KNOWN_BOT_FRUIT_NAMES = (
 
 class NewMemberExtension(dippy.Extension):
     client: dippy.Client
-    kudos: KudosManager
     labels: dippy.labels.storage.StorageInterface
     mod_manager: ModManager
     log: dippy.Logging
@@ -241,23 +239,6 @@ class NewMemberExtension(dippy.Extension):
 
     async def clear_unwelcomed_users(self, guild: Guild):
         await self._set_unwelcomed_users(guild, [])
-
-    async def _give_kudos_for_welcoming(
-        self, member: Member, num_welcomed: int, channel: TextChannel
-    ):
-        kudos = 2 * num_welcomed
-        await self.clear_unwelcomed_users(member.guild)
-        await self.kudos.give_kudos(
-            member,
-            kudos,
-            f"{member.mention} welcomed {num_welcomed} member{'s' * (num_welcomed > 1)} to the server!!!",
-        )
-        expert_emoji = utils.get(member.guild.emojis, name="expert")
-        await channel.send(
-            f"{expert_emoji} {member.mention} you got {kudos} kudos for welcoming {num_welcomed} "
-            f"member{'s' * (num_welcomed > 1)}!",
-            delete_after=5,
-        )
 
     async def _set_unwelcomed_users(self, guild: Guild, unwelcomed: list[Member]):
         await self.labels.set(
